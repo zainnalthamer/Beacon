@@ -22,6 +22,9 @@ class Technology(models.Model):
     description = models.CharField(max_length=255)
     logo_image = models.CharField(max_length=255)
 
+    class Meta:
+        db_table = "technology"
+
     def __str__(self):
         return self.name
     
@@ -35,6 +38,9 @@ class Project(models.Model):
     cover_image = models.ImageField(upload_to='project_covers/', null=True)
     technology = models.ForeignKey(Technology, on_delete=models.CASCADE, related_name='projects')
 
+    class Meta:
+        db_table = "project"
+
     def __str__(self):
         return self.title
     
@@ -43,6 +49,9 @@ class ProjectContributor(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contributions')
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='contributors')
 
+    class Meta:
+        db_table = "project_contributor"
+
     def __str__(self):
         return f"{self.user.username} → {self.project.title}"
     
@@ -50,6 +59,9 @@ class ProjectContributor(models.Model):
 class Bookmark(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmarks')
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='bookmarked_by')
+
+    class Meta:
+        db_table = "bookmark"
 
     def __str__(self):
         return f"{self.user.username} bookmarked {self.project.title}"
