@@ -2,30 +2,15 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
 from .models import User
 from .forms import SignUpForm
-
 from django.contrib.auth.models import User 
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, View
 import requests
-
-# Signup View
-class SignUpView(View):
-    def get(self, request):
-        form = SignUpForm()
-        return render(request, 'sign-up.html', {'form': form})
-    
-    def post(self, request):
-        form = SignUpForm(request.POST)
-
-        if form.is_valid():
-            form.save()
-
-            return redirect('login')
-        
-        return render(request, 'signup.html', {'form': form})
     
 # Dashboard View
+def dashboard(request):
+    return render(request, 'dashboard.html', {'role': request.user.role}) # load dashboard
 
 def is_instructor(u): return u.role == u.Role.INSTRUCTOR
 def is_student(u): return u.role == u.ROLE_STUDENT
