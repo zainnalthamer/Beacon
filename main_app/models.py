@@ -16,7 +16,7 @@ class User(AbstractUser):
         default = Role.STUDENT,
     )
 
-    classroom = models.ForeignKey('Classroom', on_delete=models.SET_NULL, related_name='students', null=True, limit_choices_to={'role':'student'})
+    classroom = models.ForeignKey('Classroom', on_delete=models.SET_NULL, related_name='students', null=True)
 
     def __str__(self):
         return self.username

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Dashboard</h1>
+<ul>
+    {% for instructor in instructors %}
+        <li>{{ instructor.username }} - {{ instructor.email }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
