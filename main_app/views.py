@@ -83,10 +83,23 @@ def add_assignment(request):
             return redirect('assignment_list')
     else:
         form = AssignmentForm()
-    return render(request, 'assignments/add_assignment.html', {'form': form})
+    return render(request, 'assignments/add_assignment.html', {'form': form, 'is_edit': False})
 
 @login_required
 @user_passes_test(is_instructor)
 def assignment_detail(request, pk):
     assignment = Assignment.objects.get(pk=pk)
     return render(request, 'assignments/assignment_detail.html', {'assignment': assignment})
+
+@login_required
+@user_passes_test(is_instructor)
+def edit_assignment(request, pk):
+    assignment = Assignment.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = AssignmentForm(request.POST, instance=assignment)
+        if form.is_valid():
+            form.save()
+            return redirect('assignment_detail', pk=assignment.pk)
+    else:
+        form = AssignmentForm(instance=assignment)
+    return render(request, 'assignments/add_assignment.html', {'form': form, 'assignment': assignment, 'is_edit': True})

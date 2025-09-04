@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (dashboard, instructor_dashboard, CustomLoginView, 
                     student_list, add_student, student_detail, delete_student,
-                    assignment_list, add_assignment, assignment_detail
+                    assignment_list, add_assignment, assignment_detail, edit_assignment
                     )
 
 urlpatterns = [
@@ -15,4 +15,5 @@ urlpatterns = [
    path('assignments/', assignment_list, name='assignment_list'),
    path('assignments/add/', add_assignment, name='add_assignment'),
    path('assignments/<int:pk>/', assignment_detail, name='assignment_detail'),
+   path('assignments/<int:pk>/edit/', edit_assignment, name='edit_assignment'),
 ]

@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Add Assignment</h1>
+<h1>{% if is_edit %}Edit Assignment{% else %}Add Assignment{% endif %}</h1>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Add Assignment</button>
+    <button type="submit">{% if is_edit %}Save Changes{% else %}Add Assignment{% endif %}</button>
 </form>
 {% endblock %}
