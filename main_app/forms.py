@@ -28,6 +28,7 @@ class AddStudentForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.role = User.Role.STUDENT
+        user.username = f"{user.first_name.lower()}.{user.last_name.lower()}"
         user.set_password(self.cleaned_data['password'])
 
         if commit:

@@ -45,12 +45,9 @@ def student_list(request):
 def add_student(request):
     if request.method == 'POST':
         form = AddStudentForm(request.POST)
-
         if form.is_valid():
             form.save()
             return redirect('student_list')
-        
-        else:
-            form = AddStudentForm
-        
-        return render(request, 'students/add_student.html', {'form': form})
+    else:
+        form = AddStudentForm()
+    return render(request, 'students/add_student.html', {'form': form})
