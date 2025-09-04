@@ -70,7 +70,6 @@ class Assignment(models.Model):
         PROJECT = "project", "Project"
 
     title = models.CharField(max_length=80)
-    description = models.CharField(max_length=255)
     assignment_type = models.CharField(
         max_length=20,
         choices=AssignmentType.choices,
@@ -81,7 +80,7 @@ class Assignment(models.Model):
         on_delete=models.CASCADE,
         related_name="assignments"
     )
-    deadline = models.DateTimeField()
+    deadline = models.DateField()
     repo_url = models.CharField(max_length=255)
     technology = models.ForeignKey(Technology, on_delete=models.CASCADE, related_name='assignments')
 

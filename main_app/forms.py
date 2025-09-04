@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, Assignment
 
 class SignUpForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -35,3 +35,10 @@ class AddStudentForm(forms.ModelForm):
             user.save()
         
         return user
+    
+class AssignmentForm(forms.ModelForm):
+    deadline = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    
+    class Meta:
+        model = Assignment
+        fields = ['title', 'assignment_type', 'classroom', 'deadline', 'repo_url', 'technology']
