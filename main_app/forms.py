@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Assignment, Submission
+from .models import User, Assignment, Submission, Feedback
 
 class SignUpForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -53,3 +53,8 @@ class SubmissionForm(forms.ModelForm):
         win = forms.CharField(label="What was a win you had with this assignment?", widget=forms.Textarea, required=True)
         challenge = forms.CharField(label="What was a challenge you had with this assignment?", widget=forms.Textarea, required=True)
         assistance = forms.CharField(label="Is there anything you'd like to share where you might need more assistance?", widget=forms.Textarea, required=True)
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['comments']

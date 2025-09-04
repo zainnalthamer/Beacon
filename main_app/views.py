@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
-from .models import User, Assignment
+from .models import User, Assignment, Submission, Feedback
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, View
@@ -8,7 +8,7 @@ import requests
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django import forms
-from .forms import AddStudentForm, AssignmentForm, SubmissionForm
+from .forms import AddStudentForm, AssignmentForm, SubmissionForm, FeedbackForm
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
@@ -133,3 +133,27 @@ def submit_assignment(request, pk):
         else:
             form = SubmissionForm()
         return render(request, 'assignments/submit_assignment.html', {'form': form, 'assignment': assignment})
+    
+@login_required
+def submission_detail(request, pk):
+    submission = Submission.objects.get(pk=pk)
+    feedback = submission.feedback.first()
+
+    if request.user.role == request.user.Role.INSTRUCTOR:
+        if request.method == 'POST':
+            form = FeedbackForm(request.POST)
+            if form.is_valid():
+                fb = form.save(commit=False)
+                fb.submission = submission
+                fb.instructor = request.user
+                fb.save()
+                return redirect('submission_detail', pk=submission.pk)
+            else:
+                form = FeedbackForm()
+        else:
+            form = None
+        return render(request, 'assignments/submission_detail.html', {
+        'submission': submission,
+        'feedback': feedback,
+        'form': form,
+        })

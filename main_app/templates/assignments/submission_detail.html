@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Submitted by {{ submission.student.username }}</h1>
+<p>GitHub Repository: <a href="{{ submission.repo_url }}">{{ submission.repo_url }}</a></p>
+<p>Live URL: <a href="{{ submission.live_url }}">{{ submission.live_url }}</a></p>
+<p>Win: {{ submission.win }}</p>
+<p>Challenge: {{ submission.challenge }}</p>
+<p>Assistance: {{ submission.assistance }}</p>
+
+<h2>Feedback</h2>
+{% if feedback %}
+    <p>{{ feedback.comments }}</p>
+    <p>By: {{ feedback.instructor.username }} at {{ feedback.given_at }}</p>
+{% else %}
+    <p>No feedback yet.</p>
+{% endif %}
+
+{% if form %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Feedback</button>
+    </form>
+{% endif %}
+{% endblock %}
