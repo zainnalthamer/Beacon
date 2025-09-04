@@ -92,11 +92,21 @@ class Assignment(models.Model):
     
 # Submission Model
 class Submission(models.Model):
+    class HomeworkStatus(models.TextChoices):
+        COMPLETE = "complete", "Complete"
+        INCOMPLETE = "incomplete", "Incomplete"
+        NOT_SUBMITTED = "not_submitted", "Not Submitted"
+
+    class ProjectStatus(models.TextChoices):
+        PASS = "pass", "Pass"
+        FAIL = "fail", "Fail"
+
     student = models.ForeignKey(User, on_delete=models.CASCADE, related_name="submissions", limit_choices_to={'role': 'student'})
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name="submissions")
     submitted_at = models.DateTimeField(auto_now_add=True)
     repo_url = models.URLField(null=True)
     live_url = models.URLField(null=True)
+    status = models.CharField(max_length=20, null=True) 
 
     class Meta:
         db_table = "submission"

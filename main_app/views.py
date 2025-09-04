@@ -103,3 +103,13 @@ def edit_assignment(request, pk):
     else:
         form = AssignmentForm(instance=assignment)
     return render(request, 'assignments/add_assignment.html', {'form': form, 'assignment': assignment, 'is_edit': True})
+
+@login_required
+@user_passes_test(is_instructor)
+def delete_assignment(request, pk):
+    assignment = Assignment.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        assignment.delete()
+        return redirect('assignment_list')
+    return render(request, 'assignments/assignment_list.html', {'assignment': assignment})

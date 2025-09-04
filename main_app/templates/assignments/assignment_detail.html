@@ -5,8 +5,8 @@
 <p>GitHub Repository: {{ assignment.repo_url }}</p>
 <p>Technology: {{ assignment.technology }}</p>
 <a href="{% url 'edit_assignment' assignment.pk %}">Edit</a>
-{% comment %} <form action="{% url 'delete_assignment' assignment.pk %}" method="post" style="display:inline;">
+<form action="{% url 'delete_assignment' assignment.pk %}" method="post">
     {% csrf_token %}
     <button type="submit">Delete</button>
-</form> {% endcomment %}
+</form>
 {% endblock %}
