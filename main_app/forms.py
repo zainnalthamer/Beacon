@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Assignment, Submission, Feedback
+from .models import User, Assignment, Submission, Feedback, Classroom
 
 class SignUpForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -58,3 +58,11 @@ class FeedbackForm(forms.ModelForm):
     class Meta:
         model = Feedback
         fields = ['comments']
+
+class ClassroomForm(forms.ModelForm):
+    class Meta:
+        model = Classroom
+        fields = ['name']
+
+class AddStudentToClassroomForm(forms.Form):
+    student = forms.ModelChoiceField(queryset=User.objects.filter(role=User.Role.STUDENT, classroom__isnull=True))

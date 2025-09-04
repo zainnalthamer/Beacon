@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Classrooms</h1>
+<ul>
+    {% for classroom in classrooms %}
+        <li>
+            {{ classroom.name }}
+            <a href="{% url 'manage_classroom_students' classroom.pk %}">Manage Students</a>
+            <form action="{% url 'delete_classroom' classroom.pk %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'add_classroom' %}"><button>Add Classroom</button></a>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Manage Students in {{ classroom.name }}</h1>
+<ul>
+    {% for student in students %}
+        <li>
+            {{ student.username }} ({{ student.first_name }} {{ student.last_name }})
+            <form action="{% url 'remove_student_from_classroom' classroom.pk student.pk %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Remove</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'add_student_to_classroom' classroom.pk %}"><button>Add Student</button></a>
+{% endblock %}
