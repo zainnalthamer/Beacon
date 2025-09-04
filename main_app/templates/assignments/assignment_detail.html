@@ -4,9 +4,31 @@
 <p>Deadline: {{ assignment.deadline }}</p>
 <p>GitHub Repository: {{ assignment.repo_url }}</p>
 <p>Technology: {{ assignment.technology }}</p>
+
+{% if user.role == user.Role.INSTRUCTOR %}
 <a href="{% url 'edit_assignment' assignment.pk %}">Edit</a>
 <form action="{% url 'delete_assignment' assignment.pk %}" method="post">
     {% csrf_token %}
     <button type="submit">Delete</button>
 </form>
+{% endif %}
+
+{% if user.role == user.Role.STUDENT %}
+    <a href="{% url 'submit_assignment' assignment.pk %}"><button>Submit Assignment</button></a>
+{% endif %}
+
+{% if user.role == user.Role.INSTRUCTOR %}
+<h2>Submissions</h2>
+<ul>
+    {% for submission in submissions %}
+        <li>
+            <a href="{% url 'submission_detail' submission.pk %}">
+                {{ submission.student.username }} - {{ submission.repo_url }}
+            </a>
+        </li>
+    {% empty %}
+        <li>No submissions yet.</li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% endblock %}

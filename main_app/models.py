@@ -107,6 +107,9 @@ class Submission(models.Model):
     repo_url = models.URLField(null=True)
     live_url = models.URLField(null=True)
     status = models.CharField(max_length=20, null=True) 
+    win = models.TextField(null=True)
+    challenge = models.TextField(null=True)
+    assistance = models.TextField(null=True)
 
     class Meta:
         db_table = "submission"

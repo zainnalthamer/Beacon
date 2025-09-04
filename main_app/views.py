@@ -8,7 +8,7 @@ import requests
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django import forms
-from .forms import AddStudentForm, AssignmentForm
+from .forms import AddStudentForm, AssignmentForm, SubmissionForm
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
@@ -89,7 +89,9 @@ def add_assignment(request):
 @user_passes_test(is_instructor)
 def assignment_detail(request, pk):
     assignment = Assignment.objects.get(pk=pk)
-    return render(request, 'assignments/assignment_detail.html', {'assignment': assignment})
+    submissions = assignment.submissions.all()
+
+    return render(request, 'assignments/assignment_detail.html', {'assignment': assignment, 'submissions': submissions})
 
 @login_required
 @user_passes_test(is_instructor)
@@ -113,3 +115,21 @@ def delete_assignment(request, pk):
         assignment.delete()
         return redirect('assignment_list')
     return render(request, 'assignments/assignment_list.html', {'assignment': assignment})
+
+# STUDENT VIEWS
+@login_required
+@user_passes_test(is_student)
+def submit_assignment(request, pk):
+    assignment = Assignment.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        form = SubmissionForm(request.POST)
+        if form.is_valid():
+            submission = form.save(commit=False)
+            submission.assignment = assignment
+            submission.student = request.user
+            submission.save()
+            return redirect('assignment_detail', pk=assignment.pk)
+        else:
+            form = SubmissionForm()
+        return render(request, 'assignments/submit_assignment.html', {'form': form, 'assignment': assignment})

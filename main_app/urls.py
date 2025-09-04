@@ -1,12 +1,14 @@
 from django.urls import path
 from .views import (dashboard, instructor_dashboard, CustomLoginView, 
                     student_list, add_student, student_detail, delete_student,
-                    assignment_list, add_assignment, assignment_detail, edit_assignment, delete_assignment
+                    assignment_list, add_assignment, assignment_detail, edit_assignment, delete_assignment,
+                    submit_assignment
                     )
 
 urlpatterns = [
    path('auth/login/', CustomLoginView.as_view(), name='login'),
    path('dashboard/', dashboard, name='dashboard'),
+
    path('instructor-dashboard/', instructor_dashboard, name='instructor_dashboard'),
    path('students/', student_list, name='student_list'),
    path('students/add/', add_student, name='add_student'),
@@ -17,4 +19,6 @@ urlpatterns = [
    path('assignments/<int:pk>/', assignment_detail, name='assignment_detail'),
    path('assignments/<int:pk>/edit/', edit_assignment, name='edit_assignment'),
    path('assignments/<int:pk>/delete/', delete_assignment, name='delete_assignment'),
+
+   path('assignments/<int:pk>/submit/', submit_assignment, name='submit_assignment'),
 ]
