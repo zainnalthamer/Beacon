@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ assignment.title }}</h1>
+<p>Deadline: {{ assignment.deadline }}</p>
+<p>GitHub Repository: {{ assignment.repo_url }}</p>
+<p>Technology: {{ assignment.technology }}</p>
+{% comment %} <a href="{% url 'edit_assignment' assignment.pk %}">Edit</a> {% endcomment %}
+{% comment %} <form action="{% url 'delete_assignment' assignment.pk %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+</form> {% endcomment %}
+{% endblock %}

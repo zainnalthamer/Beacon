@@ -84,3 +84,9 @@ def add_assignment(request):
     else:
         form = AssignmentForm()
     return render(request, 'assignments/add_assignment.html', {'form': form})
+
+@login_required
+@user_passes_test(is_instructor)
+def assignment_detail(request, pk):
+    assignment = Assignment.objects.get(pk=pk)
+    return render(request, 'assignments/assignment_detail.html', {'assignment': assignment})
