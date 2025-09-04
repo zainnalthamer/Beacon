@@ -51,3 +51,9 @@ def add_student(request):
     else:
         form = AddStudentForm()
     return render(request, 'students/add_student.html', {'form': form})
+
+@login_required
+@user_passes_test(is_instructor)
+def student_detail(request, pk):
+    student = User.objects.get(pk=pk, role=User.Role.STUDENT)
+    return render(request, 'students/student_detail.html', {'student': student})
