@@ -15,15 +15,11 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         user = self.request.user
-
         if user.role == user.Role.INSTRUCTOR:
             return reverse_lazy('instructor_dashboard')
-        
-        return reverse_lazy('dashboard')
-    
-# Dashboard View
-def dashboard(request):
-    return render(request, 'dashboard.html', {'role': request.user.role}) # load dashboard
+        elif user.role == user.Role.STUDENT:
+            return reverse_lazy('dashboard')
+        return reverse_lazy('login')
 
 def is_instructor(u): return u.role == u.Role.INSTRUCTOR
 def is_student(u): return u.role == u.ROLE_STUDENT
@@ -117,6 +113,16 @@ def delete_assignment(request, pk):
     return render(request, 'assignments/assignment_list.html', {'assignment': assignment})
 
 # STUDENT VIEWS
+@login_required
+def dashboard(request):
+    if request.user.role == request.user.Role.STUDENT:
+        classroom = request.user.classroom
+        submitted_assignment_ids = Submission.objects.filter(student=request.user).values_list('assignment_id', flat=True)
+        assignments = Assignment.objects.filter(classroom=classroom).exclude(pk__in=submitted_assignment_ids)
+        return render(request, 'students/dashboard.html', {'role': request.user.role, 'assignments': assignments})
+    else:
+        return render(request, 'dashboard.html', {'role': request.user.role})
+
 @login_required
 @user_passes_test(is_student)
 def submit_assignment(request, pk):
