@@ -3,12 +3,14 @@ from .views import (dashboard, instructor_dashboard, CustomLoginView,
                     student_list, add_student, student_detail, delete_student,
                     assignment_list, add_assignment, assignment_detail, edit_assignment, delete_assignment,
                     submit_assignment, submission_detail,
-                    classroom_list, add_classroom, delete_classroom, manage_classroom_students, add_student_to_classroom, remove_student_from_classroom
+                    classroom_list, add_classroom, delete_classroom, manage_classroom_students, add_student_to_classroom, remove_student_from_classroom,
+                    discover_projects
                     )
 
 urlpatterns = [
    path('auth/login/', CustomLoginView.as_view(), name='login'),
    path('dashboard/', dashboard, name='dashboard'),
+   path('discover/', discover_projects, name='discover_projects'),
 
    path('instructor-dashboard/', instructor_dashboard, name='instructor_dashboard'),
    path('students/', student_list, name='student_list'),

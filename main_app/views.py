@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
-from .models import User, Assignment, Submission, Feedback, Classroom
+from .models import User, Assignment, Submission, Feedback, Classroom, Technology
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, View
@@ -116,14 +116,16 @@ def delete_assignment(request, pk):
 def dashboard(request):
     if request.user.role == request.user.Role.STUDENT:
         classroom = request.user.classroom
-        submitted_homework_ids = Submission.objects.filter(student=request.user, assignment__assignment_type=Assignment.AssignmentType.HOMEWORK).values_list('assignment_id')
-        pending_homeworks = Assignment.objects.filter(classroom=classroom, assignment_type=Assignment.AssignmentType.HOMEWORK).exclude(pk__in=submitted_homework_ids)
+        submitted_assignment_ids = Submission.objects.filter(student=request.user).values_list('assignment_id')
+        pending_homeworks = Assignment.objects.filter(classroom=classroom, assignment_type=Assignment.AssignmentType.HOMEWORK).exclude(pk__in=submitted_assignment_ids)
+        pending_projects = Assignment.objects.filter(classroom=classroom, assignment_type=Assignment.AssignmentType.PROJECT).exclude(pk__in=submitted_assignment_ids)
         submitted_homeworks = Submission.objects.filter(student=request.user, assignment__assignment_type=Assignment.AssignmentType.HOMEWORK)
         submitted_projects = Submission.objects.filter(student=request.user, assignment__assignment_type=Assignment.AssignmentType.PROJECT)
 
         return render(request, 'students/dashboard.html', {
             'role': request.user.role,
             'pending_homeworks': pending_homeworks,
+            'pending_projects': pending_projects,
             'submitted_homeworks': submitted_homeworks,
             'submitted_projects': submitted_projects,
         })
@@ -227,3 +229,29 @@ def remove_student_from_classroom(request, pk, student_pk):
         student.save()
         return redirect('manage_classroom_students', pk=classroom.pk)
     return render(request, 'classrooms/remove_student_from_classroom.html', {'classroom': classroom, 'student': student})
+
+@login_required
+def discover_projects(request):
+    technologies = Technology.objects.all()
+    tech_id = request.GET.get('technology')
+    projects = Submission.objects.filter(assignment__assignment_type=Assignment.AssignmentType.PROJECT)
+
+    if tech_id:
+        projects = projects.filter(assignment__technology_id=tech_id)
+
+    return render(request, 'discover.html', {
+        'projects': projects,
+        'technologies': technologies,
+        'selected_tech': tech_id,
+    })
+
+@login_required
+@user_passes_test(is_student)
+def delete_submission(request, pk):
+    submission = Submission.objects.get(pk=pk, student=request.user)
+    assignment_pk = submission.assignment.pk
+
+    if request.method == 'POST':
+        submission.delete()
+        return redirect('dashboard')
+    return render(request, 'dashboard.html', {'submission': submission})

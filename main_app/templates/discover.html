@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Discover</h1>
+
+<form method="get">
+    <select name="technology" id="technology" onchange="this.form.submit()">
+        <option value="">All</option>
+        {% for tech in technologies %}
+            <option value="{{tech.id}}">{{tech.name}}</option>
+        {% endfor %}
+    </select>
+</form>
+
+<ul>
+    {% for project in projects %}
+        <li>
+            <a href="{% url 'submission_detail' project.pk %}"><strong>{{ project.assignment.title }}</strong> by {{ project.student.username }}</a>
+        </li>
+
+        {% empty %}
+            <li>No projects found.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
