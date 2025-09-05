@@ -116,9 +116,17 @@ def delete_assignment(request, pk):
 def dashboard(request):
     if request.user.role == request.user.Role.STUDENT:
         classroom = request.user.classroom
-        submitted_assignment_ids = Submission.objects.filter(student=request.user).values_list('assignment_id', flat=True)
-        assignments = Assignment.objects.filter(classroom=classroom).exclude(pk__in=submitted_assignment_ids)
-        return render(request, 'students/dashboard.html', {'role': request.user.role, 'assignments': assignments})
+        submitted_homework_ids = Submission.objects.filter(student=request.user, assignment__assignment_type=Assignment.AssignmentType.HOMEWORK).values_list('assignment_id')
+        pending_homeworks = Assignment.objects.filter(classroom=classroom, assignment_type=Assignment.AssignmentType.HOMEWORK).exclude(pk__in=submitted_homework_ids)
+        submitted_homeworks = Submission.objects.filter(student=request.user, assignment__assignment_type=Assignment.AssignmentType.HOMEWORK)
+        submitted_projects = Submission.objects.filter(student=request.user, assignment__assignment_type=Assignment.AssignmentType.PROJECT)
+
+        return render(request, 'students/dashboard.html', {
+            'role': request.user.role,
+            'pending_homeworks': pending_homeworks,
+            'submitted_homeworks': submitted_homeworks,
+            'submitted_projects': submitted_projects,
+        })
     else:
         return render(request, 'dashboard.html', {'role': request.user.role})
 
