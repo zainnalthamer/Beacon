@@ -6,6 +6,8 @@ from .views import (dashboard, instructor_dashboard, CustomLoginView,
                     classroom_list, add_classroom, delete_classroom, manage_classroom_students, add_student_to_classroom, remove_student_from_classroom,
                     discover_projects, delete_submission
                     )
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
    path('auth/login/', CustomLoginView.as_view(), name='login'),
@@ -33,3 +35,6 @@ urlpatterns = [
    path('assignments/<int:pk>/submit/', submit_assignment, name='submit_assignment'),
    path('submissions/<int:pk>/delete/', delete_submission, name='delete_submission'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

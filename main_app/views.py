@@ -137,7 +137,7 @@ def dashboard(request):
 def submit_assignment(request, pk):
     assignment = Assignment.objects.get(pk=pk)
     if request.method == 'POST':
-        form = SubmissionForm(request.POST)
+        form = SubmissionForm(request.POST, request.FILES)
         if form.is_valid():
             submission = form.save(commit=False)
             submission.assignment = assignment

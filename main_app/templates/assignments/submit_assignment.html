@@ -1,9 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Submit Assignment: {{ assignment.title }}</h1>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.repo_url.label_tag }} {{ form.repo_url }}
+    {{ form.live_url.label_tag }} {{ form.live_url }}
+    {{ form.win.label_tag }} {{ form.win }}
+    {{ form.challenge.label_tag }} {{ form.challenge }}
+    {{ form.assistance.label_tag }} {{ form.assistance }}
+    {% if assignment.assignment_type == assignment.AssignmentType.PROJECT %}
+        {{ form.cover_image.label_tag }} {{ form.cover_image }}
+    {% endif %}
     <button type="submit">Submit</button>
 </form>
 {% endblock %}

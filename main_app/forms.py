@@ -46,7 +46,7 @@ class AssignmentForm(forms.ModelForm):
 class SubmissionForm(forms.ModelForm):
     class Meta:
         model = Submission
-        fields = ['repo_url', 'live_url', 'win', 'challenge', 'assistance']
+        fields = ['repo_url', 'live_url', 'win', 'challenge', 'assistance', 'cover_image']
 
         repo_url = forms.URLField(label="Link to GitHub Repository", required=True)
         live_url = forms.URLField(label="Live URL (if any)", required=False)
