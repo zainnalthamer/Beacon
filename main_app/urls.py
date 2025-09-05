@@ -4,7 +4,7 @@ from .views import (dashboard, instructor_dashboard, CustomLoginView,
                     assignment_list, add_assignment, assignment_detail, edit_assignment, delete_assignment,
                     submit_assignment, submission_detail,
                     classroom_list, add_classroom, delete_classroom, manage_classroom_students, add_student_to_classroom, remove_student_from_classroom,
-                    discover_projects
+                    discover_projects, delete_submission
                     )
 
 urlpatterns = [
@@ -31,4 +31,5 @@ urlpatterns = [
    path('classrooms/<int:pk>/remove_student/<int:student_pk>/', remove_student_from_classroom, name='remove_student_from_classroom'),
 
    path('assignments/<int:pk>/submit/', submit_assignment, name='submit_assignment'),
+   path('submissions/<int:pk>/delete/', delete_submission, name='delete_submission'),
 ]

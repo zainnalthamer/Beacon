@@ -7,6 +7,13 @@
 <p>Challenge: {{ submission.challenge }}</p>
 <p>Assistance: {{ submission.assistance }}</p>
 
+{% if user.pk == submission.student.pk %}
+    <form action="{% url 'delete_submission' submission.pk %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Remove Submission</button>
+    </form>
+{% endif %}
+
 <h2>Feedback</h2>
 {% if feedback %}
     <p>{{ feedback.comments }}</p>
