@@ -27,8 +27,20 @@ def is_student(u): return u.role == u.Role.STUDENT
 @login_required
 @user_passes_test(is_instructor)
 def instructor_dashboard(request):
-    instructors = User.objects.filter(role=User.Role.INSTRUCTOR)
-    return render(request, 'instructors/instructor_dashboard.html', {'instructors':instructors})
+    classroom_count = Classroom.objects.count()
+    student_count = User.objects.filter(role=User.Role.STUDENT).count()
+    assignment_count = Assignment.objects.count()
+    submission_count = Submission.objects.count()
+    recent_assignments = Assignment.objects.order_by('-deadline')[:5]
+    recent_submissions = Submission.objects.order_by('-submitted_at')[:5]
+    return render(request, 'instructors/instructor_dashboard.html', {
+        'classroom_count': classroom_count,
+        'student_count': student_count,
+        'assignment_count': assignment_count,
+        'submission_count': submission_count,
+        'recent_assignments': recent_assignments,
+        'recent_submissions': recent_submissions,
+    })
 
 @login_required
 @user_passes_test(is_instructor)
@@ -284,3 +296,4 @@ def edit_profile(request):
     else:
         form = EditProfileForm(instance=user)
     return render(request, 'edit_profile.html', {'form': form})
+

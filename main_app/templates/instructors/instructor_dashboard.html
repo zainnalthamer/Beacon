@@ -1,9 +1,36 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Dashboard</h1>
+<h1>Instructor Dashboard</h1>
+
+<h2>Quick Stats</h2>
 <ul>
-    {% for instructor in instructors %}
-        <li>{{ instructor.username }} - {{ instructor.email }}</li>
+    <li>Total Classrooms: {{ classroom_count }}</li>
+    <li>Total Students: {{ student_count }}</li>
+    <li>Total Assignments: {{ assignment_count }}</li>
+    <li>Total Submissions: {{ submission_count }}</li>
+</ul>
+
+<h2>Recent Assignments</h2>
+<ul>
+    {% for assignment in recent_assignments %}
+        <li>
+            <a href="{% url 'assignment_detail' assignment.pk %}">{{ assignment.title }}</a>
+            ({{ assignment.assignment_type|title }}, Due: {{ assignment.deadline }})
+        </li>
+    {% empty %}
+        <li>No assignments yet.</li>
+    {% endfor %}
+</ul>
+
+<h2>Recent Submissions</h2>
+<ul>
+    {% for submission in recent_submissions %}
+        <li>
+            <a href="{% url 'submission_detail' submission.pk %}">{{ submission.assignment.title }}</a>
+            by {{ submission.student.username }} ({{ submission.submitted_at|date:"Y-m-d H:i" }})
+        </li>
+    {% empty %}
+        <li>No submissions yet.</li>
     {% endfor %}
 </ul>
 {% endblock %}
