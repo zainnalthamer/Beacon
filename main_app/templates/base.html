@@ -7,12 +7,27 @@
 </head>
 <body>
     <nav>
-      {% if user.is_authenticated%}
-        Welcome, {{user.username}} | 
-        <form action="{% url 'logout' %}" method="post" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit">Logout</button>
-        </form>
+      {% if user.is_authenticated %}
+        {% if user.role == user.Role.INSTRUCTOR %}
+          <a href="{% url 'instructor_dashboard' %}">Dashboard</a> |
+          <a href="{% url 'assignment_list' %}">Assignments</a> |
+          <a href="{% url 'student_list' %}">Students</a> |
+          <a href="{% url 'classroom_list' %}">Classrooms</a> |
+          <a href="{% url 'discover_projects' %}">Discover</a> |
+          <a href="{% url 'profile' %}">Profile</a> |
+          <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+          </form>
+        {% elif user.role == user.Role.STUDENT %}
+          <a href="{% url 'dashboard' %}">Dashboard</a> |
+          <a href="{% url 'discover_projects' %}">Discover</a> |
+          <a href="{% url 'profile' %}">Profile</a> |
+          <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+          </form>
+        {% endif %}
       {% endif %}
     </nav>
     <div class="container">
