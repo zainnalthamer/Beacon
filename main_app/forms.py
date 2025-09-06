@@ -66,3 +66,8 @@ class ClassroomForm(forms.ModelForm):
 
 class AddStudentToClassroomForm(forms.Form):
     student = forms.ModelChoiceField(queryset=User.objects.filter(role=User.Role.STUDENT, classroom__isnull=True))
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'phone_number']

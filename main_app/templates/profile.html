@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<img src="{{ user.avatar }}" alt="Avatar" style="width:120px;height:120px;border-radius:50%;">
+
+<p><strong>Username:</strong> {{ user.username }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+<p><strong>Role:</strong> {{ user.role }}</p>
+<p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+<a href="{% url 'edit_profile' %}">Edit Profile</a> |
+<a href="{% url 'change_password' %}">Change Password</a>
+
+{% if user.role == user.Role.STUDENT %}
+    <h2>Submitted Homeworks</h2>
+    <ul>
+        {% for submission in submitted_homeworks %}
+            <li>
+                <a href="{% url 'submission_detail' submission.pk %}">{{ submission.assignment.title }}</a>
+                (Submitted: {{ submission.submitted_at|date:"Y-m-d H:i" }})
+            </li>
+        {% empty %}
+            <li>No submitted homeworks.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Submitted Projects</h2>
+    <ul>
+        {% for submission in submitted_projects %}
+            <li>
+                <a href="{% url 'submission_detail' submission.pk %}">{{ submission.assignment.title }}</a>
+                (Submitted: {{ submission.submitted_at|date:"Y-m-d H:i" }})
+            </li>
+        {% empty %}
+            <li>No submitted projects.</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

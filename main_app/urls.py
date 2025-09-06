@@ -4,15 +4,23 @@ from .views import (dashboard, instructor_dashboard, CustomLoginView,
                     assignment_list, add_assignment, assignment_detail, edit_assignment, delete_assignment,
                     submit_assignment, submission_detail,
                     classroom_list, add_classroom, delete_classroom, manage_classroom_students, add_student_to_classroom, remove_student_from_classroom,
-                    discover_projects, delete_submission
+                    discover_projects, delete_submission, profile, edit_profile
                     )
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
 
 urlpatterns = [
    path('auth/login/', CustomLoginView.as_view(), name='login'),
    path('dashboard/', dashboard, name='dashboard'),
    path('discover/', discover_projects, name='discover_projects'),
+   path('profile/', profile, name='profile'),
+   path('profile/edit/', edit_profile, name='edit_profile'),
+   path('profile/change-password/', auth_views.PasswordChangeView.as_view(
+        template_name='change_password.html',
+        success_url=reverse_lazy('profile')
+    ), name='change_password'),
 
    path('instructor-dashboard/', instructor_dashboard, name='instructor_dashboard'),
    path('students/', student_list, name='student_list'),

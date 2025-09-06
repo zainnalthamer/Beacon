@@ -8,7 +8,7 @@ import requests
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django import forms
-from .forms import AddStudentForm, AssignmentForm, SubmissionForm, FeedbackForm, ClassroomForm, AddStudentToClassroomForm
+from .forms import AddStudentForm, AssignmentForm, SubmissionForm, FeedbackForm, ClassroomForm, AddStudentToClassroomForm, EditProfileForm
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
@@ -255,3 +255,32 @@ def delete_submission(request, pk):
         submission.delete()
         return redirect('dashboard')
     return render(request, 'dashboard.html', {'submission': submission})
+
+@login_required
+def profile(request):
+    user = request.user
+    submitted_homeworks = []
+    submitted_projects = []
+
+    if user.role == user.Role.STUDENT:
+        submitted_homeworks = Submission.objects.filter(student=user, assignment__assignment_type=Assignment.AssignmentType.HOMEWORK)
+        submitted_projects = Submission.objects.filter(student=user, assignment__assignment_type=Assignment.AssignmentType.PROJECT)
+
+    return render(request, 'profile.html', {
+        'user': user,
+        'submitted_homeworks': submitted_homeworks,
+        'submitted_projects': submitted_projects,
+    })
+
+@login_required
+def edit_profile(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = EditProfileForm(instance=user)
+    return render(request, 'edit_profile.html', {'form': form})

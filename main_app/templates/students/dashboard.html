@@ -6,7 +6,6 @@
             <li>
                 <a href="{% url 'assignment_detail' assignment.pk %}">{{ assignment.title }}</a>
                 (Due: {{ assignment.deadline }})
-                <a href="{% url 'submit_assignment' assignment.pk %}"><button>+</button></a>
             </li>
         {% empty %}
             <li>No pending homeworks!</li>

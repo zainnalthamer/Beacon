@@ -19,6 +19,10 @@ class User(AbstractUser):
     classroom = models.ForeignKey('Classroom', on_delete=models.SET_NULL, related_name='students', null=True)
     phone_number = models.CharField(max_length=20, null=True)
 
+    avatar = models.URLField(
+        default="https://res.cloudinary.com/dvhwvkip4/image/upload/v1757074823/0x0_indooc.png"
+    )
+
     def __str__(self):
         return self.username
 
