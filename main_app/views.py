@@ -9,6 +9,7 @@ from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django import forms
 from .forms import AddStudentForm, AssignmentForm, SubmissionForm, FeedbackForm, ClassroomForm, AddStudentToClassroomForm, EditProfileForm
+from datetime import date, timedelta
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
@@ -134,12 +135,25 @@ def dashboard(request):
         submitted_homeworks = Submission.objects.filter(student=request.user, assignment__assignment_type=Assignment.AssignmentType.HOMEWORK)
         submitted_projects = Submission.objects.filter(student=request.user, assignment__assignment_type=Assignment.AssignmentType.PROJECT)
 
+        today = date.today()
+        start_date = today.replace(day=1)
+        end_date = (start_date + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+        days_in_month = (end_date - start_date).days + 1
+        submission_dates = Submission.objects.filter(student=request.user).values_list('submitted_at', flat=True)
+        submission_days = set(dt.date() for dt in submission_dates)
+        calendar_days = []
+        for i in range(days_in_month):
+            d = start_date + timedelta(days=i)
+            calendar_days.append({'date': d, 'submitted': d in submission_days})
+
         return render(request, 'students/dashboard.html', {
             'role': request.user.role,
             'pending_homeworks': pending_homeworks,
             'pending_projects': pending_projects,
             'submitted_homeworks': submitted_homeworks,
             'submitted_projects': submitted_projects,
+            'calendar_days': calendar_days,
+            'start_date': start_date,
         })
     else:
         return render(request, 'dashboard.html', {'role': request.user.role})
