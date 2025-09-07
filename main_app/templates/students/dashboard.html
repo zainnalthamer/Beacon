@@ -1,56 +1,160 @@
 {% extends "base.html" %}
+
 {% block content %}
-    <h2>Pending Homeworks</h2>
-    <ul>
-        {% for assignment in pending_homeworks %}
-            <li>
-                <a href="{% url 'assignment_detail' assignment.pk %}">{{ assignment.title }}</a>
-                (Due: {{ assignment.deadline }})
-            </li>
-        {% empty %}
-            <li>No pending homeworks!</li>
-        {% endfor %}
-    </ul>
+<style>
+  body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: #ffffff;
+    color: #000000;
+    margin: 0;
+    padding: 2rem;
+  }
 
-    <h2>Pending Projects</h2>
-    <ul>
-        {% for assignment in pending_projects %}
-            <li>
-                <a href="{% url 'assignment_detail' assignment.pk %}">{{ assignment.title }}</a>
-                (Due: {{ assignment.deadline }})
-                <a href="{% url 'submit_assignment' assignment.pk %}"><button>+</button></a>
-            </li>
-        {% empty %}
-            <li>No pending projects!</li>
-        {% endfor %}
-    </ul>
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #000000;
+    border-left: 5px solid #d10000;
+    padding-left: 0.5rem;
+  }
 
-    <h2>Submitted Homeworks</h2>
-    <ul>
-        {% for submission in submitted_homeworks %}
-            <li>
-                <a href="{% url 'assignment_detail' submission.assignment.pk %}">{{ submission.assignment.title }}</a>
-                (Submitted: {{ submission.submitted_at|date:"Y-m-d H:i" }})
-                <a href="{% url 'submission_detail' submission.pk %}">View Submission</a>
-            </li>
-        {% empty %}
-            <li>No submitted homeworks.</li>
-        {% endfor %}
-    </ul>
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
 
-    <h2>Submitted Projects</h2>
-    <ul>
-        {% for submission in submitted_projects %}
-            <li>
-                {% if submission.cover_image %}
-                    <img src="{{ submission.cover_image.url }}" alt="Cover" style="max-width:100px;vertical-align:middle;">
-                {% endif %}
-                <a href="{% url 'assignment_detail' submission.assignment.pk %}">{{ submission.assignment.title }}</a>
-                (Submitted: {{ submission.submitted_at|date:"Y-m-d H:i" }})
-                <a href="{% url 'submission_detail' submission.pk %}">View Submission</a>
-            </li>
-        {% empty %}
-            <li>No submitted projects.</li>
-        {% endfor %}
-    </ul>
+  li {
+    background: #f9f9f9;
+    border: 1px solid #e1e1e1;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  li:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    border-color: #d10000;
+  }
+
+  li img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 0.75rem;
+    background: #eee;
+  }
+
+  li a {
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: #000000;
+    transition: color 0.2s ease;
+  }
+
+  li a:hover {
+    color: #d10000;
+  }
+
+  li button {
+    background: #d10000;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    align-self: flex-start;
+  }
+
+  li button:hover {
+    background: #aa0000;
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    h2 {
+      font-size: 1.4rem;
+    }
+    li {
+      padding: 1rem;
+    }
+  }
+</style>
+
+<h2>Pending Homeworks</h2>
+<ul>
+  {% for assignment in pending_homeworks %}
+    <li>
+      <img 
+        src="https://api.dicebear.com/7.x/pixel-art/svg?seed={{ assignment.pk }}&size=160&scale=100" 
+        alt="Pixel Cover"
+      >
+
+      <a href="{% url 'assignment_detail' assignment.pk %}">{{ assignment.title }}</a>
+      <span>(Due: {{ assignment.deadline }})</span>
+    </li>
+  {% empty %}
+    <li>No pending homeworks!</li>
+  {% endfor %}
+</ul>
+
+<h2>Pending Projects</h2>
+<ul>
+  {% for assignment in pending_projects %}
+    <li>
+      <a href="{% url 'assignment_detail' assignment.pk %}">{{ assignment.title }}</a>
+      <span>(Due: {{ assignment.deadline }})</span>
+      <a href="{% url 'submit_assignment' assignment.pk %}">
+        <button>+</button>
+      </a>
+    </li>
+  {% empty %}
+    <li>No pending projects!</li>
+  {% endfor %}
+</ul>
+
+<h2>Submitted Homeworks</h2>
+<ul>
+  {% for submission in submitted_homeworks %}
+    <li>
+      <img 
+        src="https://api.dicebear.com/7.x/identicon/svg?seed={{ submission.pk }}&scale=100" 
+        alt="Identicon Cover"
+      >
+      <a href="{% url 'assignment_detail' submission.assignment.pk %}">{{ submission.assignment.title }}</a>
+      <span>(Submitted: {{ submission.submitted_at|date:"Y-m-d H:i" }})</span>
+      <a href="{% url 'submission_detail' submission.pk %}">View Submission</a>
+    </li>
+  {% empty %}
+    <li>No submitted homeworks.</li>
+  {% endfor %}
+</ul>
+
+<h2>Submitted Projects</h2>
+<ul>
+  {% for submission in submitted_projects %}
+    <li>
+      {% if submission.cover_image %}
+        <img src="{{ submission.cover_image.url }}" alt="Cover">
+      {% endif %}
+      <a href="{% url 'assignment_detail' submission.assignment.pk %}">{{ submission.assignment.title }}</a>
+      <span>(Submitted: {{ submission.submitted_at|date:"Y-m-d H:i" }})</span>
+      <a href="{% url 'submission_detail' submission.pk %}">View Submission</a>
+    </li>
+  {% empty %}
+    <li>No submitted projects.</li>
+  {% endfor %}
+</ul>
 {% endblock %}

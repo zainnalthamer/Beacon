@@ -1,37 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beacon</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beacon</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: #ffffffff;
+      color: #333;
+      display: flex; 
+    }
+
+    .sidebar {
+      width: 240px;
+      background: #ffffff;
+      border-right: 1px solid #e5e7eb;
+      min-height: 100vh;
+      padding: 1.5rem 1rem;
+      box-sizing: border-box;
+      position: fixed; 
+      top: 0;
+      left: 0;
+      overflow: hidden;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+      .sidebar-logo img {
+      height: 40px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+
+    .sidebar a, .sidebar form button {
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      color: #374151;
+      font-weight: 500;
+      border: none;
+      background: transparent;
+      text-align: left;
+      width: 100%;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .sidebar a:hover,
+    .sidebar form button:hover {
+      background: #f3f4f6;
+      color: #d10000;
+      z-index: 1;
+    }
+
+    .sidebar a.active,
+    .sidebar form button.active {
+      background: #000;
+      color: #fff;
+      z-index: 2;
+    }
+
+    .main {
+      margin-left: 240px; 
+      padding: 2rem;
+      flex: 1;
+    }
+  </style>
 </head>
 <body>
-    <nav>
-      {% if user.is_authenticated %}
-        {% if user.role == user.Role.INSTRUCTOR %}
-          <a href="{% url 'instructor_dashboard' %}">Dashboard</a> |
-          <a href="{% url 'assignment_list' %}">Assignments</a> |
-          <a href="{% url 'student_list' %}">Students</a> |
-          <a href="{% url 'classroom_list' %}">Classrooms</a> |
-          <a href="{% url 'discover_projects' %}">Discover</a> |
-          <a href="{% url 'profile' %}">Profile</a> |
-          <form action="{% url 'logout' %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-          </form>
-        {% elif user.role == user.Role.STUDENT %}
-          <a href="{% url 'dashboard' %}">Dashboard</a> |
-          <a href="{% url 'discover_projects' %}">Discover</a> |
-          <a href="{% url 'profile' %}">Profile</a> |
-          <form action="{% url 'logout' %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-          </form>
-        {% endif %}
-      {% endif %}
-    </nav>
-    <div class="container">
-      {% block content %}{% endblock %}
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <img src="https://res.cloudinary.com/dvhwvkip4/image/upload/v1757265248/Screenshot_2025-09-07_201404_fzfijb.png" alt="Beacon Logo">
     </div>
+    {% if user.is_authenticated %}
+      {% if user.role == user.Role.INSTRUCTOR %}
+        <a href="{% url 'instructor_dashboard' %}" class="{% if request.path == '/instructor-dashboard/' %}active{% endif %}"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+        <a href="{% url 'assignment_list' %}" class="{% if request.path == '/assignments/' %}active{% endif %}"><i class="fa-solid fa-list-check"></i> Assignments</a>
+        <a href="{% url 'student_list' %}" class="{% if request.path == '/students/' %}active{% endif %}"><i class="fa-solid fa-user-graduate"></i> Students</a>
+        <a href="{% url 'classroom_list' %}" class="{% if request.path == '/classrooms/' %}active{% endif %}"><i class="fa-solid fa-chalkboard"></i> Classrooms</a>
+        <a href="{% url 'discover_projects' %}" class="{% if request.path == '/discover/' %}active{% endif %}"><i class="fa-solid fa-compass"></i> Discover</a>
+        <a href="{% url 'profile' %}" class="{% if request.path == '/profile/' %}active{% endif %}"><i class="fa-solid fa-user"></i> Profile</a>
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="{% if request.path == '/auth/logout/' %}active{% endif %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </form>
+      {% elif user.role == user.Role.STUDENT %}
+        <a href="{% url 'dashboard' %}" class="{% if request.path == '/dashboard/' %}active{% endif %}"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="{% url 'discover_projects' %}" class="{% if request.path == '/discover/' %}active{% endif %}"><i class="fa-solid fa-compass"></i> Discover</a>
+        <a href="{% url 'profile' %}" class="{% if request.path == '/profile/' %}active{% endif %}"><i class="fa-solid fa-user"></i> Profile</a>
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="{% if request.path == '/auth/logout/' %}active{% endif %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </form>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  <div class="main">
+    {% block content %}{% endblock %}
+  </div>
 </body>
 </html>
