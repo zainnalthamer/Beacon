@@ -15,6 +15,9 @@
 <ul>
     {% for project in projects %}
         <li>
+            {% if project.cover_image %}
+                <img src="{{ project.cover_image.url }}" alt="Cover" style="max-width:100px;vertical-align:middle;">
+            {% endif %}
             <a href="{% url 'submission_detail' project.pk %}"><strong>{{ project.assignment.title }}</strong> by {{ project.student.username }}</a>
         </li>
 

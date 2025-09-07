@@ -42,6 +42,9 @@
     <ul>
         {% for submission in submitted_projects %}
             <li>
+                {% if submission.cover_image %}
+                    <img src="{{ submission.cover_image.url }}" alt="Cover" style="max-width:100px;vertical-align:middle;">
+                {% endif %}
                 <a href="{% url 'assignment_detail' submission.assignment.pk %}">{{ submission.assignment.title }}</a>
                 (Submitted: {{ submission.submitted_at|date:"Y-m-d H:i" }})
                 <a href="{% url 'submission_detail' submission.pk %}">View Submission</a>
