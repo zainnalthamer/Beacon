@@ -93,37 +93,51 @@
   }
 </style>
 
-<h2>Pending Homeworks</h2>
-<ul>
+{% comment %} <h2>Pending</h2> {% endcomment %}
+<ul style="list-style:none; padding:0; margin:1rem 0 2rem;">
   {% for assignment in pending_homeworks %}
-    <li>
+    <li style="display:flex; align-items:center; gap:1rem; margin-bottom:1rem; color:#000;">
       <img 
         src="https://api.dicebear.com/7.x/pixel-art/svg?seed={{ assignment.pk }}&size=160&scale=100" 
         alt="Pixel Cover"
+        style="width:120px; height:120px; border-radius:16px; background:#eee;"
       >
-
-      <a href="{% url 'assignment_detail' assignment.pk %}">{{ assignment.title }}</a>
-      <span>(Due: {{ assignment.deadline }})</span>
+      <div>
+        <a href="{% url 'assignment_detail' assignment.pk %}" style="color:#000; text-decoration:none; font-weight:500;">{{ assignment.title }}</a>
+        <span style="margin-left:0.5rem; color:#444;">(Due: {{ assignment.deadline }})</span>
+        {% if assignment.assignment_type == assignment.AssignmentType.PROJECT %}
+          <a href="{% url 'submit_assignment' assignment.pk %}">
+            <button style="margin-left:0.5rem;">+</button>
+          </a>
+        {% endif %}
+      </div>
     </li>
-  {% empty %}
-    <li>No pending homeworks!</li>
   {% endfor %}
-</ul>
-
-<h2>Pending Projects</h2>
-<ul>
   {% for assignment in pending_projects %}
-    <li>
-      <a href="{% url 'assignment_detail' assignment.pk %}">{{ assignment.title }}</a>
-      <span>(Due: {{ assignment.deadline }})</span>
-      <a href="{% url 'submit_assignment' assignment.pk %}">
-        <button>+</button>
-      </a>
+    <li style="display:flex; align-items:center; gap:1rem; margin-bottom:1rem; color:#000;">
+      <img 
+        src="https://api.dicebear.com/7.x/pixel-art/svg?seed={{ assignment.pk }}&size=48&scale=100" 
+        alt="Pixel Cover"
+        style="width:48px; height:48px; border-radius:8px; background:#eee;"
+      >
+      <div>
+        <a href="{% url 'assignment_detail' assignment.pk %}" style="color:#000; text-decoration:none; font-weight:500;">{{ assignment.title }}</a>
+        <span style="margin-left:0.5rem; color:#444;">(Due: {{ assignment.deadline }})</span>
+        <a href="{% url 'submit_assignment' assignment.pk %}">
+          <button style="margin-left:0.5rem;">+</button>
+        </a>
+      </div>
     </li>
-  {% empty %}
-    <li>No pending projects!</li>
   {% endfor %}
 </ul>
+{% if not pending_homeworks and not pending_projects %}
+  <div style="margin:2rem 0; display:flex; flex-direction:column; align-items:flex-start;">
+    <img src="https://res.cloudinary.com/dvhwvkip4/image/upload/v1757267252/Screenshot_2025-09-07_204713_d0hjeg.png" alt="No pending assignments" style="width:300px; height:230px; border-radius:16px; vertical-align:middle; margin-bottom:0.5rem;">
+    <div style="width:300px; display:flex; justify-content:center;">
+      <span style="font-size:1.1rem; color:#000000; font-weight:500;">No Pending Assignments!</span>
+    </div>
+  </div>
+{% endif %}
 
 <h2>Submitted Homeworks</h2>
 <ul>
