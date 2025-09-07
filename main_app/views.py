@@ -126,6 +126,7 @@ def delete_assignment(request, pk):
 
 # STUDENT VIEWS
 @login_required
+@login_required
 def dashboard(request):
     if request.user.role == request.user.Role.STUDENT:
         classroom = request.user.classroom
