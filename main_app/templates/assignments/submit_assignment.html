@@ -1,17 +1,155 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+    .page {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem;
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        padding-top: 6rem;
+    }
 
-<h1>Submit Assignment: {{ assignment.title }}</h1>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.repo_url.label_tag }} {{ form.repo_url }}
-    {{ form.live_url.label_tag }} {{ form.live_url }}
-    {{ form.win.label_tag }} {{ form.win }}
-    {{ form.challenge.label_tag }} {{ form.challenge }}
-    {{ form.assistance.label_tag }} {{ form.assistance }}
-    {% if assignment.assignment_type == assignment.AssignmentType.PROJECT %}
-        {{ form.cover_image.label_tag }} {{ form.cover_image }}
-    {% endif %}
-    <button type="submit">Submit</button>
-</form>
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 2.5rem;
+    }
+
+    .section-title::before {
+        content: "";
+        width: 6px;
+        height: 28px;
+        background: #d10000;
+        border-radius: 3px;
+        box-shadow: 0 0 0 1px rgba(209, 0, 0, 0.08);
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.75rem;
+    }
+
+    .form-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 3rem;
+        flex-wrap: nowrap;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 0;
+    }
+
+    label {
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 0.4rem;
+        color: #000000;
+    }
+
+    input[type="text"], input[type="url"], textarea, input[type="file"] {
+        width: 100%;
+        border: 1px solid #e0e0e0;
+        border-radius: 0.6rem;
+        padding: 0.7rem 1rem;
+        font-size: 0.95rem;
+        font-family: inherit;
+        background: #ffffff;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input[type="file"] {
+        padding: 0.5rem 0.8rem;
+    }
+
+    textarea {
+    min-height: 70px; 
+    max-height: 70px;
+    resize: none;
+    }
+
+    input:focus, textarea:focus {
+        border-color: #d10000;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(209, 0, 0, 0.08);
+    }
+
+    button[type="submit"] {
+        align-self: flex-start;
+        background: #bb0000;
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        padding: 0.6rem 1.4rem;
+        border: none;
+        border-radius: 0.6rem;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.15s ease;
+    }
+
+    button[type="submit"]:hover {
+        background: #bb0000;
+        transform: translateY(-1px);
+    }
+
+    input, textarea, select {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+        border-radius: 8px;
+        border: 1px solid #e1e1e1;
+        padding: 0.5rem 0.8rem;
+        margin-bottom: 1.2rem;
+        background: #fff;
+        transition: box-shadow 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+        box-shadow: 0 4px 16px rgba(209,0,0,0.13);
+        outline: none;
+        border-color: #d10000;
+    }
+</style>
+
+<div class="page">
+    <div class="section-title">Submit Assignment: {{ assignment.title }}</div>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-row">
+                <div class="form-group">
+                    <input type="url" name="repo_url" placeholder="Repo URL" value="{{ form.repo_url.value | default_if_none:''}}">
+                </div>
+
+                <div class="form-group">
+                    <input type="url" name="live_url" placeholder="Live URL" value="{{ form.live_url.value|default_if_none:'' }}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <textarea name="win" placeholder="What went well?">{{ form.win.value|default_if_none:'' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <textarea name="challenge" placeholder="What was challenging?">{{ form.challenge.value|default_if_none:'' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <textarea name="assistance" placeholder="Do you need help with anything?">{{ form.assistance.value|default_if_none:'' }}</textarea>
+            </div>
+
+            {% if assignment.assignment_type == assignment.AssignmentType.PROJECT %}
+                <div class="form-group">
+                    <input type="file" name="cover_image">
+                </div>
+            {% endif %}
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 {% endblock %}
