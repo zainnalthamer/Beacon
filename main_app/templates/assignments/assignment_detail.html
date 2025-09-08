@@ -1,34 +1,147 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
-<h1>{{ assignment.title }}</h1>
-<p>Deadline: {{ assignment.deadline }}</p>
-<p>GitHub Repository: {{ assignment.repo_url }}</p>
-<p>Technology: {{ assignment.technology }}</p>
+    <style>
+    .page {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem;
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+    }
 
-{% if user.role == user.Role.INSTRUCTOR %}
-<a href="{% url 'edit_assignment' assignment.pk %}">Edit</a>
-<form action="{% url 'delete_assignment' assignment.pk %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Delete</button>
-</form>
-{% endif %}
+    h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.1rem;
+    }
 
-{% if user.role == user.Role.STUDENT %}
-    <a href="{% url 'submit_assignment' assignment.pk %}"><button>Submit Assignment</button></a>
-{% endif %}
+    .meta {
+        font-size: 1rem;
+        color: #444444;
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+    }
 
-{% if user.role == user.Role.INSTRUCTOR %}
-<h2>Submissions</h2>
-<ul>
-    {% for submission in submissions %}
-        <li>
+    .meta strong {
+        color: #000;
+        font-weight: 600;
+        display: inline-block;
+        min-width: 120px;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .btn {
+        background: #000000;
+        color: #ffffff;
+        padding: 0.55rem 1.2rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 0.65rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+        background: #222222;
+        transform: translateY(-1px);
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: #000000;
+        border: 1px solid #000000;
+    }
+
+    .btn-outline:hover {
+        background: #f5f5f5;
+    }
+
+    form.delete-form {
+        display: inline;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        margin-top: 3rem;
+    }
+
+    .submission-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .submission-list li {
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+    }
+
+    .submission-list a {
+        text-decoration: none;
+        font-weight: 600;
+        color: #000000;
+    }
+
+    .submission-list a:hover {
+        color: #d10000;
+    }
+
+    .no-submissions {
+        font-size: 0.95rem;
+        color: #777777;
+    }
+    </style>
+
+    <div class="page">
+    <h1>{{ assignment.title }}</h1>
+
+    <div class="meta">
+        <div><strong>Deadline</strong> {{ assignment.deadline }}</div>
+        <div><strong>Technology</strong> {{ assignment.technology }}</div>
+        {% if assignment.repo_url %}
+        <div><strong>Repository</strong> <a href="{{ assignment.repo_url }}">{{ assignment.repo_url }}</a></div>
+        {% endif %}
+    </div>
+
+    <div class="btn-group">
+        {% if user.role == user.Role.INSTRUCTOR %}
+        <a href="{% url 'edit_assignment' assignment.pk %}" class="btn">Edit</a>
+        <form class="delete-form" action="{% url 'delete_assignment' assignment.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline">Delete</button>
+        </form>
+        {% endif %}
+
+        {% if user.role == user.Role.STUDENT %}
+        <a href="{% url 'submit_assignment' assignment.pk %}" class="btn">Submit Assignment</a>
+        {% endif %}
+    </div>
+
+    {% if user.role == user.Role.INSTRUCTOR %}
+        <h2>Submissions</h2>
+        <ul class="submission-list">
+        {% for submission in submissions %}
+            <li>
             <a href="{% url 'submission_detail' submission.pk %}">
-                {{ submission.student.username }} - {{ submission.repo_url }}
+                {{ submission.student.username }} – {{ submission.repo_url }}
             </a>
-        </li>
-    {% empty %}
-        <li>No submissions yet.</li>
-    {% endfor %}
-</ul>
-{% endif %}
+            </li>
+        {% empty %}
+            <li class="no-submissions">No submissions yet.</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
 {% endblock %}

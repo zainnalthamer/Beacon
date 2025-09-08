@@ -10,6 +10,7 @@
 
   .page {
     max-width: 1120px;
+    margin-top: -60px;
   }
 
   .section-title{
@@ -224,7 +225,7 @@
           <ul class="homeworks-list">
             {% for assignment in pending_homeworks %}
               <li class="homework-item">
-                <img class="randomized-pic" src="https://api.dicebear.com/7.x/identicon/svg?seed={{ assignment.pk }}&size=160&scale=100" alt="Pixel Cover">
+                <img class="randomized-pic" src="https://api.dicebear.com/7.x/identicon/svg?seed=Jameson&size=160&scale=100" alt="Pixel Cover">
                 <div>
                   <a href="{% url 'assignment_detail' assignment.pk %}">{{ assignment.title }}</a>
                   <span class="meta">(Due: {{ assignment.deadline }})</span>
