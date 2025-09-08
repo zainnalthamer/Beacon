@@ -1,29 +1,130 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
+  <style>
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+    }
+    
+    h1 {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+    
+    h1::before {
+      content: '';
+      width: 6px;
+      height: 28px;
+      background: #d10000;
+      border-radius: 3px;
+      box-shadow: 0 0 0 1px rgba(209, 0, 0, 0.08);
+    }
+    
+    form {
+      margin-bottom: 2rem;
+    }
+    
+    select {
+      padding: 0.6rem 1rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 0.6rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.75rem;
+    }
+    
+    li {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    li:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      border-color: #d10000;
+    }
+    
+    .project-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .project-info {
+      padding: 1rem;
+    }
+    
+    .project-info strong {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    
+    .project-info a {
+      color: #000;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .project-info a:hover {
+      color: #d10000;
+    }
+    
+    .project-meta {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.3rem;
+    }
+  </style>
 
-<h1>Discover</h1>
+  <div class="page">
+    <h1>Discover</h1>
 
-<form method="get">
-    <select name="technology" id="technology" onchange="this.form.submit()">
+    <form method="get">
+      <select name="technology" id="technology" onchange="this.form.submit()">
         <option value="">All</option>
         {% for tech in technologies %}
-            <option value="{{tech.id}}">{{tech.name}}</option>
+          <option value="{{ tech.id }}">{{ tech.name }}</option>
         {% endfor %}
-    </select>
-</form>
+      </select>
+    </form>
 
-<ul>
-    {% for project in projects %}
+    <ul>
+      {% for project in projects %}
         <li>
-            {% if project.cover_image %}
-                <img src="{{ project.cover_image.url }}" alt="Cover" style="max-width:100px;vertical-align:middle;">
-            {% endif %}
-            <a href="{% url 'submission_detail' project.pk %}"><strong>{{ project.assignment.title }}</strong> by {{ project.student.username }}</a>
+          {% if project.cover_image %}
+            <img class="project-image" src="{{ project.cover_image.url }}" alt="Cover" />
+          {% endif %}
+          <div class="project-info">
+            <a href="{% url 'submission_detail' project.pk %}"><strong>{{ project.assignment.title }}</strong></a>
+            <div class="project-meta">By {{ project.student.username }}</div>
+          </div>
         </li>
-
-        {% empty %}
-            <li>No projects found.</li>
-    {% endfor %}
-</ul>
-
+      {% empty %}
+        <li>No projects found.</li>
+      {% endfor %}
+    </ul>
+  </div>
 {% endblock %}

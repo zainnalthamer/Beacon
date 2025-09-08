@@ -1,32 +1,192 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
-<h1>Submitted by {{ submission.student.username }}</h1>
-<p>GitHub Repository: <a href="{{ submission.repo_url }}">{{ submission.repo_url }}</a></p>
-<p>Live URL: <a href="{{ submission.live_url }}">{{ submission.live_url }}</a></p>
-<p>Win: {{ submission.win }}</p>
-<p>Challenge: {{ submission.challenge }}</p>
-<p>Assistance: {{ submission.assistance }}</p>
+  <style>
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      margin-top: -60px;
+    }
+    
+    .submission-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    
+    .submission-header .submitted-by {
+      font-size: 0.95rem;
+      color: #666666;
+      font-weight: 500;
+      margin-bottom: 2rem;
+    }
+    
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 3rem 0 1.5rem;
+    }
+    
+    .section-title::before {
+      content: '';
+      width: 6px;
+      height: 28px;
+      background: #d10000;
+      border-radius: 3px;
+      box-shadow: 0 0 0 1px rgba(209, 0, 0, 0.08);
+    }
+    
+    .submission-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    
+    .submission-meta strong {
+      font-weight: 600;
+      color: #000000;
+      display: inline-block;
+      min-width: 120px;
+    }
+    
+    .submission-meta a {
+      color: #d10000;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    
+    .submission-meta a:hover {
+      text-decoration: underline;
+    }
+    
+    .button-red {
+      display: inline-block;
+      background: #d10000;
+      color: #ffffff;
+      font-weight: 600;
+      padding: 0.6rem 1.4rem;
+      border: none;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease;
+      margin-top: 2rem;
+    }
+    
+    .button-red:hover {
+      background: #bb0000;
+      transform: translateY(-1px);
+    }
+    
+    .feedback-card {
+      background: #fafafa;
+      border: 1px solid #e3e3e3;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+    
+    .feedback-meta {
+      font-size: 0.85rem;
+      color: #666666;
+      margin-top: 0.5rem;
+    }
+    
+    .feedback-form {
+      margin-top: 2rem;
+    }
+    
+    .feedback-form textarea {
+      width: 100%;
+      min-height: 100px;
+      border: 1px solid #e1e1e1;
+      border-radius: 0.6rem;
+      padding: 0.8rem 1rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #ffffff;
+      resize: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    
+    .feedback-form textarea:focus {
+      border-color: #d10000;
+      box-shadow: 0 0 0 3px rgba(209, 0, 0, 0.08);
+      outline: none;
+    }
+    
+    .feedback-form button {
+      margin-top: 1rem;
+      background: #d10000;
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      padding: 0.6rem 1.4rem;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+    
+    .feedback-form button:hover {
+      background: #bb0000;
+      transform: translateY(-1px);
+    }
+  </style>
 
-{% if user.pk == submission.student.pk %}
-    <form action="{% url 'delete_submission' submission.pk %}" method="post">
+  <div class="page">
+    <div class="submission-header">
+      <h1>{{ submission.assignment.title }}</h1>
+      <p class="submitted-by">Submitted by {{ submission.student.username }}</p>
+    </div>
+
+    <div class="submission-meta">
+      <p>
+        <strong>GitHub Repository</strong> <a href="{{ submission.repo_url }}">{{ submission.repo_url }}</a>
+      </p>
+      <p>
+        <strong>Live URL</strong> <a href="{{ submission.live_url }}">{{ submission.live_url }}</a>
+      </p>
+      <p>
+        <strong>Win</strong> {{ submission.win }}
+      </p>
+      <p>
+        <strong>Challenge</strong> {{ submission.challenge }}
+      </p>
+      <p>
+        <strong>Assistance</strong> {{ submission.assistance }}
+      </p>
+    </div>
+
+    {% if user.pk == submission.student.pk %}
+      <form action="{% url 'delete_submission' submission.pk %}" method="post">
         {% csrf_token %}
-        <button type="submit">Remove Submission</button>
-    </form>
-{% endif %}
+        <button type="submit" class="button-red">🗑 Remove Submission</button>
+      </form>
+    {% endif %}
 
-<h2>Feedback</h2>
-{% if feedback %}
-    <p>{{ feedback.comments }}</p>
-    <p>By: {{ feedback.instructor.username }} at {{ feedback.given_at }}</p>
-{% else %}
-    <p>No feedback yet.</p>
-{% endif %}
+    <div class="section-title">Feedback</div>
 
-{% if form %}
-    <form method="post">
+    {% if feedback %}
+      <div class="feedback-card">
+        <p>{{ feedback.comments }}</p>
+        <p class="feedback-meta">By {{ feedback.instructor.username }} on {{ feedback.given_at|date:'F j, Y, g:i a' }}</p>
+      </div>
+    {% else %}
+      <p>No feedback yet.</p>
+    {% endif %}
+
+    {% if form %}
+      <form method="post" class="feedback-form">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add Feedback</button>
-    </form>
-{% endif %}
+        {{ form.comments }}
+        <button type="submit">💬 Add Feedback</button>
+      </form>
+    {% endif %}
+  </div>
 {% endblock %}
