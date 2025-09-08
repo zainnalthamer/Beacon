@@ -1,24 +1,11 @@
 {% extends "base.html" %}
-
 {% block content %}
 <style>
-  :root{
-  --brand:#d10000;
-  --text:#000;
-  --muted:#666;
-  --card:#fff;
-  --card-border:#e6e6e6;
-  --shadow:0 6px 18px rgba(0,0,0,.08);
-  --header-size:1.3rem;
-  --header-weight:700;
-  }
-
   body {
     font-family: 'Inter', 'Segoe UI', sans-serif;
-    background:#fff;
-    color:var(--text);
-    margin:0;
-    padding:2rem;
+    background: #ffffff;
+    margin: 0;
+    padding: 2rem;
   }
 
   .page {
@@ -26,110 +13,195 @@
   }
 
   .section-title{
-    display:flex;
-    align-items:center;
-    gap:.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
     margin: 1.75rem 0 1rem;
     line-height:1;
-  font-weight:var(--header-weight);
-  font-size:var(--header-size);
-    letter-spacing:.2px;
-  }
-  .section-title::before{
-    content:"";
-    width:6px;
-    height:28px;
-    background:var(--brand);
-    border-radius:3px;
-    box-shadow: 0 0 0 1px rgba(209,0,0,.08);
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.2px;
   }
 
-  ul{
-    list-style:none;
-    padding:0;
-    margin:1rem 0 2rem;
-    display:grid;
+  .section-title::before {
+    content: "";
+    width: 6px;
+    height: 28px;
+    background: #d10000;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(209,0,0,0.08);
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 2rem;
+    display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap:1.25rem;
+    gap: 1.25rem;
   }
 
-  li{
-    background:#f9f9f9;
-    border:1px solid #e1e1e1;
-    border-radius:1rem;
-    padding:1.1rem;
-    box-shadow:0 4px 12px rgba(0,0,0,.05);
-    display:flex;
-    flex-direction:column;
-    gap:.6rem;
+  li {
+    background: #f9f9f9;
+    border: 1px solid #e1e1e1;
+    border-radius: 1rem;
+    padding: 1.1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
     transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   }
-  li:hover{
+
+  li:hover {
     transform:translateY(-3px);
-    box-shadow:var(--shadow);
-    border-color:var(--brand);
+    box-shadow: 0 6px 18px rgba(0,0,0,.08);
+    border-color: #d10000;
   }
+
   li a{
     text-decoration:none;
-    color:var(--text);
+    color: #000000;
     font-weight:600;
   }
-  li a:hover{ color:var(--brand); }
 
-  .submitted-list{
+  li a:hover {
+    color: #d10000;
+  }
+
+  .submitted-list {
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
     gap:1.25rem;
   }
-  .submitted-list li{
-    background:var(--card);
-    border:1px solid var(--card-border);
-    min-height:240px;
-    padding:1rem;
+
+  .submitted-list li {
+    background: #ffffff;
+    border:1px solid #e6e6e6;
+    min-height: 240px;
+    padding: 1rem;
   }
+
   .submitted-list li img{
     width:100%;
     height:180px;           
     object-fit:cover;
-    border-radius:.75rem;
-    margin-bottom:.5rem;
-    background:#eee;
-  }
-  .meta{
-    font-size:.92rem;
-    color:var(--muted);
-    margin-top:-.25rem;
-  }
-  .view-link{
-    margin-top:.15rem;
-    display:inline-block;
-    font-weight:700;
+    border-radius: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: #eeeeee;
   }
 
-  .row{
-    display:flex;
-    gap:2.5rem;
-    align-items:center;
-    flex-wrap:wrap;
-    margin-top:-20px;
+  .meta {
+    font-size: 0.92rem;
+    color: #666666;
+    margin-top: -0.25rem;
   }
-  .calendar-grid{
-    display:grid;
+
+  .view-link {
+    margin-top: 0.15rem;
+    display: inline-block;
+    font-weight: 700;
+  }
+
+  .row {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: -20px;
+  }
+
+  .calendar-grid {
+    display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap:4px;
-    max-width:350px;
-    margin-bottom:2rem;
-  }
-  .calendar-cell{
-    width:44px; height:44px;
-    display:flex; align-items:center; justify-content:center;
-    border-radius:6px;
-    font-weight:600;
-    box-shadow:0 2px 8px rgba(217,4,41,.07);
+    gap: 4px;
+    max-width: 350px;
+    margin-bottom: 2rem;
   }
 
-  @media (max-width:768px){
-    .page{ max-width:100%; }
-    li{ padding:1rem; }
+  .calendar-cell {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    border-radius: 6px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(217,4,41,.07);
+  }
+
+  .section-container {
+    flex: 1; 
+    min-width: 320px;
+    margin-top: -30px;
+  }
+
+  .homeworks-list {
+    list-style: none;
+    padding: 0; 
+    margin: 1rem 0 2rem;
+  }
+
+  .homework-item {
+    display: flex; 
+    align-items: center; 
+    gap: 1rem; 
+    margin-bottom: 1rem;
+  }
+
+  .randomized-pic {
+    width: 120px; 
+    height: 120px; 
+    border-radius: 16px; 
+    background: #eeeeee;
+  }
+
+  .submit-hw-button {
+    margin-left: 0.5rem; 
+    background: #d10000; 
+    border: none; 
+    color: #ffffff; 
+    padding: 0.4rem 0.8rem; 
+    border-radius: 0.5rem;
+  }
+
+  .project-item {
+    display: flex; 
+    align-items: center; 
+    gap: 1rem; 
+    margin-bottom: 1rem;
+  }
+
+  .project-image {
+    width: 48px; 
+    height: 48px; 
+    border-radius: 8px; 
+    background: #eeeeee;
+  }
+
+  .pending-assignments {
+    margin: 2rem 0; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-start;
+  }
+
+  .no-pending-pic {
+    width: 300px; 
+    height: 230px; 
+    border-radius: 16px; 
+    margin-bottom: 0.5rem; 
+    margin-top: -90px;
+  }
+
+  .no-pending-container {
+    width: 300px; 
+    display: flex; 
+    justify-content: center;
+  }
+
+  .no-pending-text {
+    font-size: 1.05rem; 
+    font-weight: 600;
   }
 </style>
 
@@ -137,93 +209,83 @@
   <div class="row">
     <div>
       <div class="section-title">This Month</div>
-      <div class="calendar-grid">
-        {% for day in calendar_days %}
-          <div class="calendar-cell"
-               style="background:{% if day.submitted %}#ffd6e0{% else %}#f3f3f3{% endif %};
-                      color:{% if day.submitted %}var(--brand){% else %}#888{% endif %};">
-            {{ day.date.day }}
-          </div>
-        {% endfor %}
+        <div class="calendar-grid">
+          {% for day in calendar_days %}
+            <div class="calendar-cell"
+               style="background:{% if day.submitted %}#ffd6e0{% else %}#f3f3f3{% endif %}; color:{% if day.submitted %}var(--brand){% else %}#888{% endif %};">
+                {{ day.date.day }}
+            </div>
+          {% endfor %}
+        </div>
       </div>
-    </div>
 
-    <div style="flex:1; min-width:320px;">
-      <div class="section-title">Pending</div>
-      <ul style="list-style:none; padding:0; margin:1rem 0 2rem;">
-        {% for assignment in pending_homeworks %}
-          <li style="display:flex; align-items:center; gap:1rem; margin-bottom:1rem;">
-            <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed={{ assignment.pk }}&size=160&scale=100"
-                 alt="Pixel Cover"
-                 style="width:120px; height:120px; border-radius:16px; background:#eee;">
-            <div>
-              <a href="{% url 'assignment_detail' assignment.pk %}">{{ assignment.title }}</a>
-              <span class="meta">(Due: {{ assignment.deadline }})</span>
-              {% if assignment.assignment_type == assignment.AssignmentType.PROJECT %}
-                <a href="{% url 'submit_assignment' assignment.pk %}">
-                  <button style="margin-left:.5rem; background:var(--brand); border:none; color:#fff; padding:.4rem .8rem; border-radius:.5rem;">+</button>
-                </a>
-              {% endif %}
+      <div class="section-container">
+        <div class="section-title">Pending</div>
+          <ul class="homeworks-list">
+            {% for assignment in pending_homeworks %}
+              <li class="homework-item">
+                <img class="randomized-pic" src="https://api.dicebear.com/7.x/identicon/svg?seed={{ assignment.pk }}&size=160&scale=100" alt="Pixel Cover">
+                <div>
+                  <a href="{% url 'assignment_detail' assignment.pk %}">{{ assignment.title }}</a>
+                  <span class="meta">(Due: {{ assignment.deadline }})</span>
+                    {% if assignment.assignment_type == assignment.AssignmentType.PROJECT %}
+                      <a href="{% url 'submit_assignment' assignment.pk %}"><button class="submit-hw-button">+</button></a>
+                    {% endif %}
+                </div>
+              </li>
+            {% endfor %}
+
+            {% for assignment in pending_projects %}
+              <li class="project-item">
+                <img class="project-image" src="https://api.dicebear.com/7.x/identicon/svg?seed={{ assignment.pk }}&size=48&scale=100" alt="Cover Image">
+                <div>
+                  <a href="{% url 'assignment_detail' assignment.pk %}">{{ assignment.title }}</a>
+                  <span class="meta">(Due: {{ assignment.deadline }})</span>
+                  <a href="{% url 'submit_assignment' assignment.pk %}"><button class="submit-button">+</button></a>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+
+          {% if not pending_homeworks and not pending_projects %}
+            <div class="pending-assignments">
+              <img class="no-pending-pic" src="https://res.cloudinary.com/dvhwvkip4/image/upload/v1757267252/Screenshot_2025-09-07_204713_d0hjeg.png" alt="No pending assignments">
+              <div class="no-pending-container">
+                <span class="no-pending-text">No Pending Assignments!</span>
+              </div>
             </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="section-title">Homeworks</div>
+        <ul class="submitted-list">
+        {% for submission in submitted_homeworks %}
+          <li>
+            <img src="https://api.dicebear.com/7.x/identicon/svg?seed={{ submission.pk }}&scale=100" alt="Identicon Cover">
+            <a href="{% url 'assignment_detail' submission.assignment.pk %}">{{ submission.assignment.title }}</a>
+            <div class="meta">Submitted: {{ submission.submitted_at|date:"Y-m-d H:i" }}</div>
+            <a class="view-link" href="{% url 'submission_detail' submission.pk %}">View Submission</a>
           </li>
-        {% endfor %}
-        {% for assignment in pending_projects %}
-          <li style="display:flex; align-items:center; gap:1rem; margin-bottom:1rem;">
-            <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed={{ assignment.pk }}&size=48&scale=100"
-                 alt="Pixel Cover"
-                 style="width:48px; height:48px; border-radius:8px; background:#eee;">
-            <div>
-              <a href="{% url 'assignment_detail' assignment.pk %}">{{ assignment.title }}</a>
-              <span class="meta">(Due: {{ assignment.deadline }})</span>
-              <a href="{% url 'submit_assignment' assignment.pk %}">
-                <button style="margin-left:.5rem; background:var(--brand); border:none; color:#fff; padding:.4rem .8rem; border-radius:.5rem;">+</button>
-              </a>
-            </div>
-          </li>
+        {% empty %}
+          <li>No submitted homeworks.</li>
         {% endfor %}
       </ul>
 
-      {% if not pending_homeworks and not pending_projects %}
-        <div style="margin:2rem 0; display:flex; flex-direction:column; align-items:flex-start;">
-          <img src="https://res.cloudinary.com/dvhwvkip4/image/upload/v1757267252/Screenshot_2025-09-07_204713_d0hjeg.png"
-               alt="No pending assignments"
-               style="width:300px; height:230px; border-radius:16px; margin-bottom:.5rem; margin-top:-90px;">
-          <div style="width:300px; display:flex; justify-content:center;">
-            <span style="font-size:1.05rem; font-weight:600;">No Pending Assignments!</span>
-          </div>
-        </div>
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="section-title">Homeworks</div>
-  <ul class="submitted-list">
-    {% for submission in submitted_homeworks %}
-      <li>
-        <img src="https://api.dicebear.com/7.x/identicon/svg?seed={{ submission.pk }}&scale=100" alt="Identicon Cover">
-        <a href="{% url 'assignment_detail' submission.assignment.pk %}">{{ submission.assignment.title }}</a>
-        <div class="meta">Submitted: {{ submission.submitted_at|date:"Y-m-d H:i" }}</div>
-        <a class="view-link" href="{% url 'submission_detail' submission.pk %}">View Submission</a>
-      </li>
-    {% empty %}
-      <li>No submitted homeworks.</li>
-    {% endfor %}
-  </ul>
-
-  <div class="section-title">Projects</div>
-  <ul class="submitted-list">
-    {% for submission in submitted_projects %}
-      <li>
-        {% if submission.cover_image %}
-          <img src="{{ submission.cover_image.url }}" alt="Cover">
-        {% endif %}
-        <a href="{% url 'assignment_detail' submission.assignment.pk %}">{{ submission.assignment.title }}</a>
-        <div class="meta">Submitted: {{ submission.submitted_at|date:"Y-m-d H:i" }}</div>
-        <a class="view-link" href="{% url 'submission_detail' submission.pk %}">View Submission</a>
-      </li>
-    {% empty %}
-      <li>No submitted projects.</li>
-    {% endfor %}
-  </ul>
-</div>
-{% endblock %}
+      <div class="section-title">Projects</div>
+        <ul class="submitted-list">
+          {% for submission in submitted_projects %}
+            <li>
+              {% if submission.cover_image %}
+                <img src="{{ submission.cover_image.url }}" alt="Cover">
+              {% endif %}
+              <a href="{% url 'assignment_detail' submission.assignment.pk %}">{{ submission.assignment.title }}</a>
+              <div class="meta">Submitted: {{ submission.submitted_at|date:"Y-m-d H:i" }}</div>
+              <a class="view-link" href="{% url 'submission_detail' submission.pk %}">View Submission</a>
+            </li>
+            {% empty %}
+              <li>No submitted projects.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endblock %}
