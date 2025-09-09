@@ -46,13 +46,22 @@ class AssignmentForm(forms.ModelForm):
 class SubmissionForm(forms.ModelForm):
     class Meta:
         model = Submission
-        fields = ['repo_url', 'live_url', 'win', 'challenge', 'assistance', 'cover_image']
+        fields = ["repo_url", "live_url", "win", "challenge", "assistance", "cover_image"]
 
-        repo_url = forms.URLField(label="Link to GitHub Repository", required=True)
-        live_url = forms.URLField(label="Live URL (if any)", required=False)
-        win = forms.CharField(label="What was a win you had with this assignment?", widget=forms.Textarea, required=True)
-        challenge = forms.CharField(label="What was a challenge you had with this assignment?", widget=forms.Textarea, required=True)
-        assistance = forms.CharField(label="Is there anything you'd like to share where you might need more assistance?", widget=forms.Textarea, required=True)
+    def __init__(self, *args, **kwargs):
+        self.assignment = kwargs.pop("assignment", None)
+        super().__init__(*args, **kwargs)
+
+        self.fields["repo_url"].required = True
+        self.fields["live_url"].required = True
+        self.fields["win"].required = False
+        self.fields["challenge"].required = False
+        self.fields["assistance"].required = False
+
+        if self.assignment and getattr(self.assignment, "assignment_type", None) == self.assignment.AssignmentType.PROJECT:
+            self.fields["cover_image"].required = True  
+        else:
+            self.fields["cover_image"].required = False
 
 class FeedbackForm(forms.ModelForm):
     class Meta:

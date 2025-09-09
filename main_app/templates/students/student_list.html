@@ -80,7 +80,7 @@
     <ul class="student-list">
       {% for student in students %}
         <li>
-          <a href="{% url 'student_detail' student.pk %}">{{ student.username }}</a>
+          <a href="{% url 'instructor_student_profile' student.pk %}">{{ student.username }}</a>
         </li>
       {% empty %}
         <li style="padding:1rem; color:#777777;">No students available.</li>

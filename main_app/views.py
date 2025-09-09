@@ -65,7 +65,14 @@ def add_student(request):
 @user_passes_test(is_instructor)
 def student_detail(request, pk):
     student = User.objects.get(pk=pk, role=User.Role.STUDENT)
-    return render(request, 'students/student_detail.html', {'student': student})
+    submitted_homeworks = Submission.objects.filter(student=student, assignment__assignment_type=Assignment.AssignmentType.HOMEWORK)
+    submitted_projects = Submission.objects.filter(student=student, assignment__assignment_type=Assignment.AssignmentType.PROJECT)
+    return render(request, 'profile.html', {
+        'user': student,
+        'submitted_homeworks': submitted_homeworks,
+        'submitted_projects': submitted_projects,
+        'show_edit': False,
+    })
 
 @login_required
 @user_passes_test(is_instructor)
@@ -312,3 +319,15 @@ def edit_profile(request):
         form = EditProfileForm(instance=user)
     return render(request, 'edit_profile.html', {'form': form})
 
+from django.shortcuts import get_object_or_404
+@login_required
+@user_passes_test(is_instructor)
+def instructor_student_profile(request, pk):
+    student = get_object_or_404(User, pk=pk, role=User.Role.STUDENT)
+    submitted_homeworks = Submission.objects.filter(student=student, assignment__assignment_type=Assignment.AssignmentType.HOMEWORK)
+    submitted_projects = Submission.objects.filter(student=student, assignment__assignment_type=Assignment.AssignmentType.PROJECT)
+    return render(request, 'instructor_student_profile.html', {
+        'student': student,
+        'submitted_homeworks': submitted_homeworks,
+        'submitted_projects': submitted_projects,
+    })
