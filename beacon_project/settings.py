@@ -91,6 +91,7 @@ DATABASES = {
 AUTH_USER_MODEL = "main_app.User"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+LOGOUT_REDIRECT_URL = '/auth/login/'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
