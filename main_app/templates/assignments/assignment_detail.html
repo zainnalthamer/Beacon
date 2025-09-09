@@ -29,13 +29,13 @@
       display: inline-block;
       min-width: 120px;
     }
-    
+
     .meta a {
       color: #000000;
       text-decoration: underline;
       text-underline-offset: 0.15em;
     }
-    
+
     .meta a:hover {
       color: #d10000;
     }
@@ -47,7 +47,7 @@
       margin-top: 2rem;
       margin-bottom: 3rem;
     }
-    
+
     .btn {
       background: #000000;
       color: #ffffff;
@@ -60,22 +60,22 @@
       text-decoration: none;
       transition: all 0.2s ease;
     }
-    
+
     .btn:hover {
       background: #222222;
       transform: translateY(-1px);
     }
-    
+
     .btn-outline {
       background: transparent;
       color: #000000;
       border: 1px solid #000000;
     }
-    
+
     .btn-outline:hover {
       background: #f5f5f5;
     }
-    
+
     form.delete-form {
       display: inline;
     }
@@ -91,7 +91,7 @@
     
     .submission-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1.4rem;
       margin-top: 1rem;
     }
@@ -104,8 +104,10 @@
       padding: 1rem 1.2rem;
       transition: box-shadow 0.2s ease, transform 0.2s ease;
       max-width: 340px;
+      min-width: 0;
+      box-sizing: border-box;
     }
-    
+
     .submission-card:hover {
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
       transform: translateY(-2px);
@@ -117,7 +119,7 @@
       gap: 0.8rem;
       margin-bottom: 0.8rem;
     }
-    
+
     .sub-avatar {
       width: 42px;
       height: 42px;
@@ -127,7 +129,7 @@
       border: 1px solid #e1e1e1;
       flex-shrink: 0;
     }
-    
+
     .sub-avatar img {
       width: 100%;
       height: 100%;
@@ -137,14 +139,15 @@
     .sub-info {
       display: flex;
       flex-direction: column;
+      min-width: 0;
     }
-    
+
     .sub-name {
       font-weight: 600;
       font-size: 0.95rem;
       color: #111111;
     }
-    
+
     .sub-time {
       font-size: 0.8rem;
       color: #666666;
@@ -152,23 +155,28 @@
     
     .sub-link {
       margin: 0.4rem 0 0.8rem;
+      min-width: 0;
     }
-    
+
     .sub-link a {
-      display: inline-block;
+      display: block; 
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
       padding: 0.45rem 0.7rem;
       font-size: 0.9rem;
       font-weight: 600;
-      color: #000000ff;
+      color: #000000;
       text-decoration: none;
       border: 1px dashed #cccccc;
       border-radius: 0.5rem;
-      transition: background 0.2s ease, border-color 0.2s ease;
+      background: #f9f9f9;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      transition: background 0.2s ease, border-color 0.2s ease;
     }
-    
+
     .sub-link a:hover {
       background: #f5f5f5;
       border-color: #aaaaaa;
@@ -178,7 +186,7 @@
     .sub-actions {
       margin-top: 0.5rem;
     }
-    
+
     .sub-actions a {
       font-size: 0.85rem;
       font-weight: 600;
@@ -189,7 +197,7 @@
       border-radius: 0.5rem;
       transition: background 0.2s ease, color 0.2s ease;
     }
-    
+
     .sub-actions a:hover {
       background: #000000;
       color: #ffffff;
@@ -213,8 +221,7 @@
       </div>
       {% if assignment.repo_url %}
         <div>
-          <strong>Repository</strong>
-          <a href="{{ assignment.repo_url }}" target="_blank">{{ assignment.repo_url }}</a>
+          <strong>Repository</strong> <a href="{{ assignment.repo_url }}" target="_blank">{{ assignment.repo_url }}</a>
         </div>
       {% endif %}
     </div>
@@ -227,7 +234,6 @@
           <button type="submit" class="btn btn-outline">Delete</button>
         </form>
       {% endif %}
-
       {% if user.role == user.Role.STUDENT %}
         <a href="{% url 'submit_assignment' assignment.pk %}" class="btn">Submit Assignment</a>
       {% endif %}
@@ -251,7 +257,7 @@
 
               <div class="sub-link">
                 {% if submission.repo_url %}
-                  <a href="{{ submission.repo_url }}" target="_blank">{{ submission.repo_url }}</a>
+                  <a href="{{ submission.repo_url }}" target="_blank" title="{{ submission.repo_url }}">{{ submission.repo_url }}</a>
                 {% else %}
                   <span class="no-submissions">No repository link provided.</span>
                 {% endif %}
