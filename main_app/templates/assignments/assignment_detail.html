@@ -1,147 +1,271 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
-    <style>
+  <style>
     .page {
-        max-width: 960px;
-        margin: 0 auto;
-        padding: 3rem 1.5rem;
-        font-family: 'Inter', 'Segoe UI', sans-serif;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
     }
-
+    
     h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 1.1rem;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1.1rem;
     }
-
+    
     .meta {
-        font-size: 1rem;
-        color: #444444;
-        margin-bottom: 1.5rem;
-        line-height: 1.8;
+      font-size: 1rem;
+      color: #444444;
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
     }
-
+    
     .meta strong {
-        color: #000;
-        font-weight: 600;
-        display: inline-block;
-        min-width: 120px;
+      color: #000000;
+      font-weight: 600;
+      display: inline-block;
+      min-width: 120px;
     }
-
+    
+    .meta a {
+      color: #000000;
+      text-decoration: underline;
+      text-underline-offset: 0.15em;
+    }
+    
+    .meta a:hover {
+      color: #d10000;
+    }
+    
     .btn-group {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-top: 2rem;
-        margin-bottom: 3rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+      margin-bottom: 3rem;
     }
-
+    
     .btn {
-        background: #000000;
-        color: #ffffff;
-        padding: 0.55rem 1.2rem;
-        font-size: 0.95rem;
-        font-weight: 600;
-        border: none;
-        border-radius: 0.65rem;
-        cursor: pointer;
-        text-decoration: none;
-        transition: all 0.2s ease;
+      background: #000000;
+      color: #ffffff;
+      padding: 0.55rem 1.2rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 0.65rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
     }
-
+    
     .btn:hover {
-        background: #222222;
-        transform: translateY(-1px);
+      background: #222222;
+      transform: translateY(-1px);
     }
-
+    
     .btn-outline {
-        background: transparent;
-        color: #000000;
-        border: 1px solid #000000;
+      background: transparent;
+      color: #000000;
+      border: 1px solid #000000;
     }
-
+    
     .btn-outline:hover {
-        background: #f5f5f5;
+      background: #f5f5f5;
     }
-
+    
     form.delete-form {
-        display: inline;
+      display: inline;
     }
-
+    
     h2 {
-        font-size: 1.2rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        margin-top: 3rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      margin-top: 3rem;
+      border-left: 4px solid #d10000;
+      padding-left: 0.8rem;
     }
-
-    .submission-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+    
+    .submission-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.4rem;
+      margin-top: 1rem;
     }
-
-    .submission-list li {
-        margin-bottom: 0.75rem;
-        font-size: 0.95rem;
+    
+    .submission-card {
+      background: #ffffff;
+      border: 1px solid #e2e2e2;
+      border-radius: 0.8rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      padding: 1rem 1.2rem;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      max-width: 340px;
     }
-
-    .submission-list a {
-        text-decoration: none;
-        font-weight: 600;
-        color: #000000;
+    
+    .submission-card:hover {
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
     }
-
-    .submission-list a:hover {
-        color: #d10000;
+    
+    .sub-top {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
     }
-
+    
+    .sub-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #f2f2f2;
+      border: 1px solid #e1e1e1;
+      flex-shrink: 0;
+    }
+    
+    .sub-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .sub-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .sub-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #111111;
+    }
+    
+    .sub-time {
+      font-size: 0.8rem;
+      color: #666666;
+    }
+    
+    .sub-link {
+      margin: 0.4rem 0 0.8rem;
+    }
+    
+    .sub-link a {
+      display: inline-block;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #000000ff;
+      text-decoration: none;
+      border: 1px dashed #cccccc;
+      border-radius: 0.5rem;
+      transition: background 0.2s ease, border-color 0.2s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .sub-link a:hover {
+      background: #f5f5f5;
+      border-color: #aaaaaa;
+      text-decoration: underline;
+    }
+    
+    .sub-actions {
+      margin-top: 0.5rem;
+    }
+    
+    .sub-actions a {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #000000;
+      text-decoration: none;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid #000000;
+      border-radius: 0.5rem;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    
+    .sub-actions a:hover {
+      background: #000000;
+      color: #ffffff;
+    }
+    
     .no-submissions {
-        font-size: 0.95rem;
-        color: #777777;
+      font-size: 0.95rem;
+      color: #777777;
     }
-    </style>
+  </style>
 
-    <div class="page">
+  <div class="page">
     <h1>{{ assignment.title }}</h1>
 
     <div class="meta">
-        <div><strong>Deadline</strong> {{ assignment.deadline }}</div>
-        <div><strong>Technology</strong> {{ assignment.technology }}</div>
-        {% if assignment.repo_url %}
-        <div><strong>Repository</strong> <a href="{{ assignment.repo_url }}">{{ assignment.repo_url }}</a></div>
-        {% endif %}
+      <div>
+        <strong>Deadline</strong> {{ assignment.deadline }}
+      </div>
+      <div>
+        <strong>Technology</strong> {{ assignment.technology }}
+      </div>
+      {% if assignment.repo_url %}
+        <div>
+          <strong>Repository</strong>
+          <a href="{{ assignment.repo_url }}" target="_blank">{{ assignment.repo_url }}</a>
+        </div>
+      {% endif %}
     </div>
 
     <div class="btn-group">
-        {% if user.role == user.Role.INSTRUCTOR %}
+      {% if user.role == user.Role.INSTRUCTOR %}
         <a href="{% url 'edit_assignment' assignment.pk %}" class="btn">Edit</a>
         <form class="delete-form" action="{% url 'delete_assignment' assignment.pk %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-outline">Delete</button>
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline">Delete</button>
         </form>
-        {% endif %}
+      {% endif %}
 
-        {% if user.role == user.Role.STUDENT %}
+      {% if user.role == user.Role.STUDENT %}
         <a href="{% url 'submit_assignment' assignment.pk %}" class="btn">Submit Assignment</a>
-        {% endif %}
+      {% endif %}
     </div>
 
     {% if user.role == user.Role.INSTRUCTOR %}
-        <h2>Submissions</h2>
-        <ul class="submission-list">
-        {% for submission in submissions %}
-            <li>
-            <a href="{% url 'submission_detail' submission.pk %}">
-                {{ submission.student.username }} – {{ submission.repo_url }}
-            </a>
-            </li>
-        {% empty %}
-            <li class="no-submissions">No submissions yet.</li>
-        {% endfor %}
-        </ul>
+      <h2>Submissions</h2>
+      {% if submissions %}
+        <div class="submission-grid">
+          {% for submission in submissions %}
+            <div class="submission-card">
+              <div class="sub-top">
+                <div class="sub-avatar">
+                  <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed={{ submission.student.username|urlencode }}" alt="{{ submission.student.username }}" />
+                </div>
+                <div class="sub-info">
+                  <div class="sub-name">{{ submission.student.username }}</div>
+                  <div class="sub-time">{{ submission.submitted_at|date:'Y-m-d H:i' }}</div>
+                </div>
+              </div>
+
+              <div class="sub-link">
+                {% if submission.repo_url %}
+                  <a href="{{ submission.repo_url }}" target="_blank">{{ submission.repo_url }}</a>
+                {% else %}
+                  <span class="no-submissions">No repository link provided.</span>
+                {% endif %}
+              </div>
+
+              <div class="sub-actions">
+                <a href="{% url 'submission_detail' submission.pk %}">View Details</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="no-submissions">No submissions yet.</p>
+      {% endif %}
     {% endif %}
-    </div>
+  </div>
 {% endblock %}
