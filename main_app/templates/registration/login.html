@@ -1,12 +1,93 @@
-{% extends "base.html" %}
-
+{% extends 'base_auth.html' %}
 {% block content %}
-<h1>Login</h1>
+  <style>
+    .page {
+      max-width: 420px;
+      margin: 4rem auto;
+      padding: 2.5rem 2rem;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      color: #111111;
+      background: #ffffff;
+      border: 1px solid #e2e2e2;
+      border-radius: 0.8rem;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+      margin-top: 200px;
+    }
+    
+    .logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 0;
+      margin-top: -30px;
+    }
+    .logo img {
+      width: 160px;
+      height: 160px;
+      object-fit: contain;
+      border-radius: 0.5rem;
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    form p {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin: 0;
+    }
+    form label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #333333;
+    }
+    form input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1px solid #cccccc;
+      border-radius: 0.6rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #fafafa;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    form input:focus {
+      border-color: #d10000;
+      box-shadow: 0 0 0 3px rgba(209, 0, 0, 0.1);
+      background: #ffffff;
+      outline: none;
+    }
+    
+    /* Button */
+    form button {
+      background: #d10000;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+    form button:hover {
+      background: #bb0000;
+      transform: translateY(-1px);
+    }
+  </style>
+
+  <div class="page">
+    <div class="logo">
+      <img src="https://res.cloudinary.com/dvhwvkip4/image/upload/v1757265248/Screenshot_2025-09-07_201404_fzfijb.png" alt="Beacon Logo" />
+    </div>
 
     <form method="post">
-        {% csrf_token %}
-        {{form.as_p}}
-
-        <button>Sign In</button>
+      {% csrf_token %}
+      <input type="text" name="username" id="id_username" placeholder="Username" />
+      <input type="password" name="password" id="id_password" placeholder="Password" />
+      <button type="submit">Sign In</button>
     </form>
-{% endblock  %}
+  </div>
+{% endblock %}

@@ -1,16 +1,212 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
-<h1>Manage Students in {{ classroom.name }}</h1>
-<ul>
-    {% for student in students %}
-        <li>
-            {{ student.username }} ({{ student.first_name }} {{ student.last_name }})
-            <form action="{% url 'remove_student_from_classroom' classroom.pk student.pk %}" method="post" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit">Remove</button>
-            </form>
-        </li>
-    {% endfor %}
-</ul>
-<a href="{% url 'add_student_to_classroom' classroom.pk %}"><button>Add Student</button></a>
+  <style>
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      color: #111111;
+    }
+    
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .toolbar h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0;
+      border-left: 5px solid #d10000;
+      padding-left: 1rem;
+    }
+
+    .add-btn {
+      display: inline-block;
+      background: #d10000;
+      color: #ffffff;
+      font-weight: 600;
+      padding: 0.6rem 1.1rem;
+      border: none;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: background 0.2s ease, transform 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .add-btn:hover {
+      background: #bb0000;
+      transform: translateY(-1px);
+    }
+    
+    .table-wrap {
+      background: #ffffff;
+      border: 1px solid #e6e6e6;
+      border-radius: 0.8rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.95rem;
+    }
+
+    .table thead th {
+      background: #fafafa;
+      color: #333333;
+      text-align: left;
+      font-weight: 700;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #e6e6e6;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .table tbody td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: middle;
+    }
+
+    .table tbody tr:nth-child(even) td {
+      background: #fcfcfc;
+    }
+
+    .table tbody tr:hover td {
+      background: #f7f7f7;
+    }
+    
+    .user-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 0;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #f0f0f0;
+      border: 1px solid #ececec;
+      flex: 0 0 auto;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .user-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .username {
+      font-weight: 700;
+      color: #111111;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .fullname {
+      font-size: 0.85rem;
+      color: #666666;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .btn-outline-red {
+      border: 1px solid #d10000;
+      color: #d10000;
+      background: transparent;
+      padding: 0.45rem 0.8rem;
+      border-radius: 0.5rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    }
+
+    .btn-outline-red:hover {
+      background: #d10000;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .inline-form {
+      display: inline;
+    }
+    
+    .empty {
+      padding: 1rem;
+      color: #777777;
+    }
+  </style>
+
+  <div class="page">
+    <div class="toolbar">
+      <h1>Manage Students in {{ classroom.name }}</h1>
+      <a href="{% url 'add_student_to_classroom' classroom.pk %}" class="add-btn">+ Add Student</a>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:50%;">Student</th>
+            <th style="width:30%;">Name</th>
+            <th style="width:20%; text-align:right;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for student in students %}
+            <tr>
+              <td class="user-cell" data-label="Student">
+                <span class="avatar"><img src="https://api.dicebear.com/7.x/pixel-art/svg?seed={{ student.username|urlencode }}" alt="{{ student.username }}" /></span>
+                <span class="user-text"><span class="username">{{ student.username }}</span></span>
+              </td>
+              <td data-label="Name">
+                <span class="fullname">{{ student.first_name }} {{ student.last_name }}</span>
+              </td>
+              <td data-label="Actions">
+                <div class="actions">
+                  <form class="inline-form" action="{% url 'remove_student_from_classroom' classroom.pk student.pk %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-outline-red">Remove</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="3" class="empty">No students in this classroom yet.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 {% endblock %}
