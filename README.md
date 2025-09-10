@@ -26,7 +26,6 @@ Beacon is a modern Django-based platform for classroom management, assignment tr
 
 ## Screenshots
 ![Student Dashboard](https://res.cloudinary.com/dvhwvkip4/image/upload/v1757483174/Screenshot_2025-09-10_084210_ioe7k2.png)
-<hr>
 ![Student Profile](https://res.cloudinary.com/dvhwvkip4/image/upload/v1757486357/Screenshot_2025-09-10_093914_fkvawc.png)
 
 **Note:** These screenshots are just a sneak peek of Beacon. Explore the full app live here: [Beacon Website]()
