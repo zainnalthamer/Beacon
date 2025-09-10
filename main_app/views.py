@@ -331,3 +331,41 @@ def instructor_student_profile(request, pk):
         'submitted_homeworks': submitted_homeworks,
         'submitted_projects': submitted_projects,
     })
+
+import csv
+from django.http import HttpResponse
+@login_required
+@user_passes_test(is_instructor)
+def export_students_submissions_csv(request):
+    students = User.objects.filter(role=User.Role.STUDENT)
+    submissions = Submission.objects.select_related('student', 'assignment')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="students_submissions.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'Student Name', 'Class Name', 'Assignment Name', 'GitHub Repo', 'Live Repo', 'Win', 'Challenge', 'Assistance'
+    ])
+
+    for student in students:
+        student_submissions = submissions.filter(student=student)
+        if student_submissions.exists():
+            for sub in student_submissions:
+                writer.writerow([
+                    f"{student.first_name} {student.last_name}",
+                    student.classroom.name,
+                    sub.assignment.title,
+                    sub.repo_url,
+                    sub.live_url,
+                    sub.win,
+                    sub.challenge,
+                    sub.assistance
+                ])
+        else:
+            writer.writerow([
+                f"{student.first_name} {student.last_name}",
+                student.classroom.name,
+                '', '', '', '', '', ''
+            ])
+    return response

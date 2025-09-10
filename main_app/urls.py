@@ -4,7 +4,7 @@ from .views import (dashboard, instructor_dashboard, CustomLoginView,
                     assignment_list, add_assignment, assignment_detail, edit_assignment, delete_assignment,
                     submit_assignment, submission_detail,
                     classroom_list, add_classroom, delete_classroom, manage_classroom_students, add_student_to_classroom, remove_student_from_classroom,
-                    discover_projects, delete_submission, profile, edit_profile, instructor_student_profile
+                    discover_projects, delete_submission, profile, edit_profile, instructor_student_profile, export_students_submissions_csv
                     )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -43,6 +43,7 @@ urlpatterns = [
    path('assignments/<int:pk>/submit/', submit_assignment, name='submit_assignment'),
    path('submissions/<int:pk>/delete/', delete_submission, name='delete_submission'),
    path('students/<int:pk>/profile/', instructor_student_profile, name='instructor_student_profile'),
+   path('students/export/csv/', export_students_submissions_csv, name='export_students_submissions_csv'),
 ]
 
 if settings.DEBUG:

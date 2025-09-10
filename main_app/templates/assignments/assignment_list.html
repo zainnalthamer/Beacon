@@ -31,9 +31,29 @@
       transition: background 0.2s ease, transform 0.15s ease;
       margin-bottom: 2rem;
     }
-
+    
     .add-btn:hover {
       background: #bb0000;
+      transform: translateY(-1px);
+    }
+    
+    .download-btn {
+      display: inline-block;
+      background: #000000ff;
+      color: #ffffff;
+      font-weight: 600;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: background 0.2s ease, transform 0.15s ease;
+      margin-bottom: 2rem;
+    }
+    
+    .download-btn:hover {
+      background: #000000ff;
       transform: translateY(-1px);
     }
     
@@ -45,7 +65,7 @@
       padding: 0;
       margin: 0;
     }
-
+    
     .assignment-list li {
       background: #ffffff;
       border: 1px solid #e2e2e2;
@@ -53,12 +73,12 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
-
+    
     .assignment-list li:hover {
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
       transform: translateY(-2px);
     }
-
+    
     .assignment-list a {
       display: block;
       padding: 1rem 1.2rem;
@@ -76,6 +96,7 @@
   <div class="page">
     <h1>Assignments</h1>
     <a href="{% url 'add_assignment' %}" class="add-btn">+ Add Assignment</a>
+    <a href="{% url 'export_students_submissions_csv' %}" class="download-btn">Download CSV</a>
 
     <ul class="assignment-list">
       {% for assignment in assignments %}
