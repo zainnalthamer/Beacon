@@ -10,20 +10,6 @@ Beacon is a modern Django-based platform for classroom management, assignment tr
 - CSV export for instructors
 - Modern sidebar navigation
 
-## Getting Started
-1. Clone the repository and install dependencies:
-   git clone <repo-url>
-   cd Beacon
-   python -m venv beacon-venv
-   beacon-venv\Scripts\activate
-   pip install -r requirements.txt
-
-2. Run migrations and start the server:
-   python manage.py migrate
-   python manage.py runserver
-
-3. Access the app at `http://localhost:8000/`
-
 ## Screenshots
 ![Student Dashboard](https://res.cloudinary.com/dvhwvkip4/image/upload/v1757483174/Screenshot_2025-09-10_084210_ioe7k2.png)
 ![Student Profile](https://res.cloudinary.com/dvhwvkip4/image/upload/v1757486357/Screenshot_2025-09-10_093914_fkvawc.png)
