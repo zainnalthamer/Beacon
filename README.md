@@ -1,6 +1,9 @@
 # Beacon
 Beacon is a modern Django-based platform for classroom management, assignment tracking, and project discovery. It supports both instructors and students, providing dashboards, assignment submission, feedback with a clean, user-friendly interface.
 
+## Entity Relationship Diagram
+![ERD](https://res.cloudinary.com/dvhwvkip4/image/upload/v1757562044/Beacon_-_ERD_xflxyw.png)
+
 ## Features
 - Instructor and student dashboards
 - Assignment and project management
@@ -14,7 +17,7 @@ Beacon is a modern Django-based platform for classroom management, assignment tr
 ![Student Dashboard](https://res.cloudinary.com/dvhwvkip4/image/upload/v1757483174/Screenshot_2025-09-10_084210_ioe7k2.png)
 ![Student Profile](https://res.cloudinary.com/dvhwvkip4/image/upload/v1757486357/Screenshot_2025-09-10_093914_fkvawc.png)
 
-**Note:** These screenshots are just a sneak peek of Beacon. Explore the full app live here: [Beacon Website]()
+**Note:** These screenshots are just a sneak peek of Beacon. 
 
 ## Common Paths
 | Path                      | Description                       |
